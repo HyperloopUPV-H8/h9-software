@@ -1,6 +1,9 @@
 package vehicle
 
-import "github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
+import (
+	"github.com/HyperloopUPV-H8/h9-backend/internal/update_factory"
+	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
+)
 
 // New creates a new Vehicle with no modules registered on it
 func New() Vehicle {
@@ -40,4 +43,12 @@ func (vehicle *Vehicle) SetTransport(transport abstraction.Transport) {
 // SetLogger sets the Vehicle Logger to the provided one
 func (vehicle *Vehicle) SetLogger(logger abstraction.Logger) {
 	vehicle.logger = logger
+}
+
+func (vehicle *Vehicle) SetUpdateFactory(updateFactory *update_factory.UpdateFactory) {
+	vehicle.updateFactory = updateFactory
+}
+
+func (vehicle *Vehicle) SetIdToBoardName(idToBoardName map[uint16]string) {
+	vehicle.idToBoardName = idToBoardName
 }

@@ -36,6 +36,7 @@ func HandleDataJSON(name string, data any) (*handleData, error) {
 func (handle *handleData) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	defer request.Body.Close()
 
+	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	http.ServeContent(writer, request, handle.name, handle.modTime, handle.data)
 }
 
@@ -43,7 +44,7 @@ type handleStatic struct {
 	path string
 }
 
-func HandleStatic(path string, subroutes map[string]string) *handleStatic {
+func HandleStatic(path string) *handleStatic {
 	return &handleStatic{
 		path: path,
 	}
@@ -52,5 +53,6 @@ func HandleStatic(path string, subroutes map[string]string) *handleStatic {
 func (handle *handleStatic) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	defer request.Body.Close()
 
+	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	http.ServeFile(writer, request, handle.path)
 }

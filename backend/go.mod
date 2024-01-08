@@ -6,7 +6,6 @@ require (
 	github.com/HyperloopUPV-H8/ade-linter v0.0.0-20230530153315-3379f05a664f
 	github.com/google/gopacket v1.1.19
 	github.com/google/uuid v1.3.0
-	github.com/gorilla/mux v1.8.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/pelletier/go-toml/v2 v2.0.7
 	github.com/pin/tftp/v3 v3.0.0

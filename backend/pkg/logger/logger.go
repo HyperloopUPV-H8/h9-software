@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
 	"path"
@@ -9,7 +8,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	wsModels "github.com/HyperloopUPV-H8/h9-backend/internal/ws_handle/models"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 )
 
@@ -32,41 +30,6 @@ var _ abstraction.Logger = &Logger{}
 var Timestamp = time.Now()
 
 func (Logger) HandlerName() string { return HandlerName }
-
-func (logger Logger) UpdateMessage(_ wsModels.Client, message wsModels.Message) {
-	var enable bool
-	err := json.Unmarshal(message.Payload, &enable)
-	if err != nil {
-		if err != nil {
-			fmt.Println(ErrStoppingLogger{
-				Name:      Name,
-				Timestamp: time.Now(),
-			}.Error())
-		}
-		fmt.Println("Error unmarshalling enable message")
-		return
-	}
-
-	if enable {
-		err := logger.Start()
-		if err != nil {
-			fmt.Println(ErrStartingLogger{
-				Name:      Name,
-				Timestamp: time.Now(),
-			}.Error())
-			return
-		}
-	} else {
-		err := logger.Stop()
-		if err != nil {
-			fmt.Println(ErrStoppingLogger{
-				Name:      Name,
-				Timestamp: time.Now(),
-			}.Error())
-			return
-		}
-	}
-}
 
 func NewLogger(keys map[abstraction.LoggerName]abstraction.Logger) *Logger {
 	logger := &Logger{
