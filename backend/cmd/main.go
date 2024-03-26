@@ -58,6 +58,7 @@ import (
 var traceLevel = flag.String("trace", "info", "set the trace level (\"fatal\", \"error\", \"warn\", \"info\", \"debug\", \"trace\")")
 var traceFile = flag.String("log", "trace.json", "set the trace log file")
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
+var enableSNTP = flag.Bool("sntp", false, "enables a simple SNTP server on port 123")
 
 func main() {
 	flag.Parse()
@@ -267,24 +268,26 @@ func main() {
 	}
 
 	// <--- SNTP --->
-	sntpAddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf("%s:%d", info.Addresses.Backend, info.Ports.SNTP))
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error resolving sntp address: %v\n", err)
-		os.Exit(1)
-	}
-	sntpServer, err := sntp.NewUnicast("udp", sntpAddr)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error creating sntp server: %v\n", err)
-		os.Exit(1)
-	}
-
-	go func() {
-		err := sntpServer.ListenAndServe()
+	if *enableSNTP {
+		sntpAddr, err := net.ResolveUDPAddr("udp", fmt.Sprintf("%s:%d", info.Addresses.Backend, info.Ports.SNTP))
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "error listening sntp server: %v\n", err)
-			return
+			fmt.Fprintf(os.Stderr, "error resolving sntp address: %v\n", err)
+			os.Exit(1)
 		}
-	}()
+		sntpServer, err := sntp.NewUnicast("udp", sntpAddr)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "error creating sntp server: %v\n", err)
+			os.Exit(1)
+		}
+
+		go func() {
+			err := sntpServer.ListenAndServe()
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "error listening sntp server: %v\n", err)
+				return
+			}
+		}()
+	}
 
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
