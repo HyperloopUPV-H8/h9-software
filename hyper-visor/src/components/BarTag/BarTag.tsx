@@ -1,32 +1,36 @@
 import styles from "./BarTag.module.scss";
-import { NumericMeasurement } from "common";
-import { Bar, BarType } from "./Bar/Bar";
+import { NumericMeasurementInfo } from "common";
+import { BarType } from "./Bar/Bar";
 import { ValueData } from "components/ValueData/ValueData";
 
 type Props = {
-    measurement: NumericMeasurement;
+    measurement: NumericMeasurementInfo;
     barType: BarType;
     showWrapper?: boolean;
 };
 
 export const BarTag = ({
     measurement,
-    barType,
     showWrapper = false,
 }: Props) => {
+
     return (
         <article
             className={`${styles.barTagWrapper} ${
                 showWrapper ? "tagWrapper" : ""
             }`}
         >
-            <Bar
+            {/* <Bar
                 type={barType}
-                value={measurement.value.average}
+                value={}
                 max={100}
                 min={0}
+            /> */}
+            <ValueData
+                name={measurement.name}
+                getUpdate={measurement.getUpdate}
+                units={measurement.units} 
             />
-            <ValueData measurement={measurement} />
         </article>
     );
 };

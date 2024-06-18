@@ -1,20 +1,24 @@
+import { useState } from "react";
 import styles from "./Value.module.scss";
-import { Measurement, isNumericMeasurement } from "common";
+import { useGlobalTicker } from "common";
 
 type Props = {
-    measurement: Measurement;
+    getUpdate: () => number,
+    units: string
 };
 
-export const Value = ({ measurement }: Props) => {
-    if (isNumericMeasurement(measurement)) {
-        return (
-            <span className={styles.value}>
-                {measurement.value.average.toFixed(2)} {measurement.units}
-            </span>
-        );
-    } else {
-        return (
-            <span className={styles.value}>{measurement.value.toString()}</span>
-        );
-    }
+export const Value = ({ getUpdate, units }: Props) => {
+
+    const [value, setValue] = useState(getUpdate());
+
+    useGlobalTicker(() => {
+        setValue(getUpdate());
+        console.log("Value updated");
+    })
+
+    return (
+        <span className={styles.value}>
+            {value.toFixed(2)} {units}
+        </span>
+    );
 };

@@ -1,11 +1,8 @@
-import { LineDescription, isNumericMeasurement } from "common";
-import { store } from "store";
+import { LineDescription, Measurements, NumericMeasurement, isNumericMeasurement } from "common";
 
-export function getLines(ids: string[]): LineDescription[] {
+export function getLines(measurements: Measurements, ids: string[]): LineDescription[] {
     return ids.flatMap((id) => {
-        const measurements = store.getState().measurements;
-
-        const meas = measurements.measurements[id];
+        const meas = measurements[id];
 
         if (!meas || !isNumericMeasurement(meas)) {
             return [];
@@ -16,25 +13,24 @@ export function getLines(ids: string[]): LineDescription[] {
                 id: id,
                 name: meas.name,
                 color: "red",
-                getUpdate: () => getMeasurementUpdate(id),
+                getUpdate: () => getMeasurementUpdate(meas),
                 range: meas.safeRange,
             },
         ];
     });
 }
 
-function getMeasurementUpdate(id: string): number {
-    const measurement = store.getState().measurements.measurements[id];
+function getMeasurementUpdate(measurement: NumericMeasurement): number {
 
     if (!measurement) {
-        console.error(`measurement ${id} not found`);
+        console.error(`measurement ${measurement} not found`);
         return 0;
     }
 
     if (isNumericMeasurement(measurement)) {
         return measurement.value.last;
     } else {
-        console.error(`measurement ${id} is not numeric`);
+        console.error(`measurement ${measurement} is not numeric`);
         return 0;
     }
 }

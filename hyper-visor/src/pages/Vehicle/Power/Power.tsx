@@ -5,11 +5,10 @@ import { BatteryTag } from "./components/BatteryTag.tsx";
 import { LevitationUnitTag } from "./components/LevitationUnitTag.tsx";
 import { LevitationSection } from "./components/LevitationSection.tsx";
 import { TagType } from "./models/TagType.ts";
-import { useMeasurements } from "hooks/useMeasurements.ts";
-import { selectPcuMeasurements } from "common";
+import { selectPcuMeasurements, useMeasurementsStore } from "common";
 
 export const Power = () => {
-    const measurements = useMeasurements();
+    const measurements = useMeasurementsStore((state) => state.measurements);
     const pcuData = selectPcuMeasurements(measurements);
 
     return (

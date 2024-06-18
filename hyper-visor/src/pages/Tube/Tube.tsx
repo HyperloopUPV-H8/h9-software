@@ -3,14 +3,11 @@ import { Pump } from "./Pump/Pump";
 import styles from "./Tube.module.scss";
 import { DoubleGauge } from "components/DoubleGauge/DoubleGauge";
 import { ReactComponent as TubeRealistic } from "assets/icons/tube-realistic.svg";
-import { useMeasurements } from "hooks/useMeasurements";
-import { selectLcuMeasurements } from "common";
+import { LcuMeasurements, NumericMeasurement, useMeasurementsStore } from "common";
 //import { selectLcuMeasurements, selectTcuMeasurements } from "common";
 
 export const Tube = () => {
-    const measurements = useMeasurements();
-    const lcuData = selectLcuMeasurements(measurements);
-    //const tcuData = selectTcuMeasurements(measurements);
+    const measurements = useMeasurementsStore((state) => state.measurements);
 
     return (
         <div className={styles.tube}>
@@ -25,8 +22,8 @@ export const Tube = () => {
             <DoubleGauge
                 // firstGauge={tcuData.pressure}
                 // secondGauge={tcuData.temperature}
-                firstGauge={lcuData.airgap_1}
-                secondGauge={lcuData.airgap_2}
+                firstGauge={measurements[LcuMeasurements.airgap1] as NumericMeasurement}
+                secondGauge={measurements[LcuMeasurements.airgap2] as NumericMeasurement}
             />
             <Pump on={true} />
         </div>

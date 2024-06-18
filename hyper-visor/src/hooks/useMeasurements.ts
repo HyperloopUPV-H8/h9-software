@@ -1,22 +1,21 @@
-import { useInterval, useSubscribe } from "common";
+import { useInterval, useMeasurementsStore, useSubscribe } from "common";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateMeasurements } from "slices/measurementsSlice";
-import { store } from "store";
 
 export function useMeasurements() {
-    const dispatch = useDispatch();
+    
+    const measurementsStore = useMeasurementsStore((state) => state.measurements);
+    const updateMeasurements = useMeasurementsStore(state => state.updateMeasurements)
 
     useSubscribe("podData/update", (update) => {
-        dispatch(updateMeasurements(update));
+        updateMeasurements(update)
     });
 
     const [measurements, setMeasurements] = useState(
-        store.getState().measurements
+        measurementsStore
     );
 
     useInterval(() => {
-        setMeasurements(store.getState().measurements);
+        setMeasurements(useMeasurementsStore((state) => state.measurements));
     }, 1000 / 30);
 
     return measurements;

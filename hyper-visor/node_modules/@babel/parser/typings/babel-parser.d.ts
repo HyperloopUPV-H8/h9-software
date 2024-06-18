@@ -1,5 +1,5 @@
 // This file is auto-generated! Do not modify it directly.
-/* eslint-disable import/no-extraneous-dependencies, @typescript-eslint/consistent-type-imports, prettier/prettier */
+/* eslint-disable @typescript-eslint/consistent-type-imports, prettier/prettier */
 import * as _babel_types from '@babel/types';
 
 type Plugin =
@@ -12,6 +12,7 @@ type Plugin =
   | "classStaticBlock" // Enabled by default
   | "decimal"
   | "decorators-legacy"
+  | "deferredImportEvaluation"
   | "decoratorAutoAccessors"
   | "destructuringPrivate"
   | "doExpressions"
@@ -40,6 +41,7 @@ type Plugin =
   | "placeholders"
   | "privateIn" // Enabled by default
   | "regexpUnicodeSets" // Enabled by default
+  | "sourcePhaseImports"
   | "throwExpressions"
   | "topLevelAwait"
   | "v8intrinsic"
@@ -51,6 +53,7 @@ type ParserPluginWithOptions =
   | ["importAttributes", { deprecatedAssertSyntax: boolean }]
   // @deprecated
   | ["moduleAttributes", { version: "may-2020" }]
+  | ["optionalChainingAssign", { version: "2023-07" }]
   | ["pipelineOperator", PipelineOperatorPluginOptions]
   | ["recordAndTuple", RecordAndTuplePluginOptions]
   | ["flow", FlowPluginOptions]
@@ -219,6 +222,13 @@ interface ParserOptions {
    * AST nodes instead of using the `extra` property.
    */
   createParenthesizedExpressions?: boolean;
+
+  /**
+   * The default is false in Babel 7 and true in Babel 8
+   * Set this to true to parse it as an `ImportExpression` node.
+   * Otherwise `import(foo)` is parsed as `CallExpression(Import, [Identifier(foo)])`.
+   */
+  createImportExpressions?: boolean;
 }
 
 type ParserPlugin = PluginConfig;

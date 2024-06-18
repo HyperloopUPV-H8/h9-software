@@ -12,10 +12,9 @@ import {
     createWsHandler,
     useConfig,
     useFetchBack,
+    useMeasurementsStore,
+    usePodDataStore,
 } from "common";
-import { useDispatch } from "react-redux";
-import { initPodData } from "slices/podDataSlice";
-import { initMeasurements } from "slices/measurementsSlice";
 
 const dockItems: DockItemData[] = [
     { icon: <Wheel />, path: "/vehicle" },
@@ -33,7 +32,9 @@ function App() {
         ? `${config.prodServer.ip}:${config.prodServer.port}/${config.paths.websocket}`
         : `${config.devServer.ip}:${config.devServer.port}/${config.paths.websocket}`;
 
-    const dispatch = useDispatch();
+    const initPodData = usePodDataStore((state) => state.initPodData);
+    const initMeasurements = useMeasurementsStore((state) => state.initMeasurements);
+
     return (
         <Loader
             LoadingView={<div>Loading</div>}
@@ -41,8 +42,8 @@ function App() {
             promises={[
                 createWsHandler(SERVER_URL, true),
                 podDataDescriptionPromise.then((adapter) => {
-                    dispatch(initPodData(adapter));
-                    dispatch(initMeasurements(adapter));
+                    initPodData(adapter);
+                    initMeasurements(adapter);
                 }),
             ]}
         >

@@ -5,7 +5,7 @@ import React from "react";
 type Props = {
     title: string;
     body: string;
-    units: [React.ReactNode, React.ReactNode, React.ReactNode, React.ReactNode];
+    units: React.ReactNode[];
 };
 
 export const EMUnits = ({ title, body, units }: Props) => {

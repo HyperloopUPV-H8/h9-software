@@ -14,8 +14,6 @@ import { Levitation } from "pages/Vehicle/Levitation/Levitation.tsx";
 import { Tube } from "pages/Tube/Tube.tsx";
 import { Power } from "pages/Vehicle/Power/Power.tsx";
 import { CamerasPage } from "pages/CamerasPage/CamerasPage.tsx";
-import { Provider } from "react-redux";
-import { store } from "store.ts";
 
 const router = createBrowserRouter([
     {
@@ -57,15 +55,13 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
-        <Provider store={store}>
-            <ConfigProvider
-                devIp="127.0.0.1"
-                prodIp="192.168.0.9"
-            >
-                <GlobalTicker fps={20}>
-                    <RouterProvider router={router}></RouterProvider>
-                </GlobalTicker>
-            </ConfigProvider>
-        </Provider>
+        <ConfigProvider
+            devIp="127.0.0.1"
+            prodIp="192.168.0.9"
+        >
+            <GlobalTicker fps={20}>
+                <RouterProvider router={router}></RouterProvider>
+            </GlobalTicker>
+        </ConfigProvider>
     </React.StrictMode>
 );

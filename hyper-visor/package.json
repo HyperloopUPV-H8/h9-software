@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.5",
-        "common": "npm:@hyperloop-upv/common-front@2.0.24",
+        "common": "file:../common-front",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-redux": "^8.0.5",
