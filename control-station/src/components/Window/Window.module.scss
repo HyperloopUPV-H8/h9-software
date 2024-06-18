@@ -6,8 +6,6 @@
     flex-direction: column;
     border-radius: 0.8rem;
     overflow: hidden;
-    height: fit-content;
-    max-height: 100%;
     filter: var(--shadow);
     overflow: scroll;
 }
@@ -22,11 +20,10 @@
 
 .content {
     min-width: fit-content;
-    height: 100%;
     display: flex;
+    flex: 1;
     justify-content: center;
     padding: .6rem;
     background-color: colors.getColor("primary", 99);
-    min-height: 0;
     overflow: scroll;
 }

@@ -11,7 +11,10 @@ export const OBCCUGeneralInfo = () => {
     
     const getNumericMeasurementInfo = useMeasurementsStore(state => state.getNumericMeasurementInfo)
     const totalVoltageHigh = getNumericMeasurementInfo(ObccuMeasurements.totalVoltageHigh)
-    const batteryTemperature1 = getNumericMeasurementInfo(ObccuMeasurements.battery_temperature_1)
+    // const inverterTemperature = getNumericMeasurementInfo(ObccuMeasurements.inverterTemperature)
+    // const transformerTemperature = getNumericMeasurementInfo(ObccuMeasurements.transformerTemperature)
+    // const resonantTankTemperature = getNumericMeasurementInfo(ObccuMeasurements.resonantTankTemperature)
+    // const rectifierTemperature = getNumericMeasurementInfo(ObccuMeasurements.rectifierTemperature)
     
     return (
         <Window title="OBCCU">
@@ -75,40 +78,40 @@ export const OBCCUGeneralInfo = () => {
                         />
                     </IndicatorStack>
 
-                    <IndicatorStack>
+                    {/* <IndicatorStack>
                         <BarIndicator
                             icon={batteryIcon}
-                            title="TODO"
-                            getValue={batteryTemperature1.getUpdate}
-                            safeRangeMin={batteryTemperature1.range[0] ?? 0}
-                            safeRangeMax={batteryTemperature1.range[1] ?? 100}
+                            title="Inverter"
+                            getValue={inverterTemperature.getUpdate}
+                            safeRangeMin={inverterTemperature.range[0] ?? 0}
+                            safeRangeMax={inverterTemperature.range[1] ?? 100}
                             units="ºC"
                         />
                         <BarIndicator 
                             icon={batteryIcon}
-                            title="TODO" 
-                            getValue={batteryTemperature1.getUpdate}
-                            safeRangeMin={batteryTemperature1.range[0] ?? 0}
-                            safeRangeMax={batteryTemperature1.range[1] ?? 100}
+                            title="Transformer" 
+                            getValue={transformerTemperature.getUpdate}
+                            safeRangeMin={transformerTemperature.range[0] ?? 0}
+                            safeRangeMax={transformerTemperature.range[1] ?? 100}
                             units="ºC"
                         />
                         <BarIndicator 
                             icon={batteryIcon}
-                            title="TODO" 
-                            getValue={batteryTemperature1.getUpdate}
-                            safeRangeMin={batteryTemperature1.range[0] ?? 0}
-                            safeRangeMax={batteryTemperature1.range[1] ?? 100}
+                            title="Resonant Tank" 
+                            getValue={resonantTankTemperature.getUpdate}
+                            safeRangeMin={resonantTankTemperature.range[0] ?? 0}
+                            safeRangeMax={resonantTankTemperature.range[1] ?? 100}
                             units="ºC"
                         />
                         <BarIndicator 
                             icon={batteryIcon}
-                            title="TODO" 
-                            getValue={batteryTemperature1.getUpdate}
-                            safeRangeMin={batteryTemperature1.range[0] ?? 0}
-                            safeRangeMax={batteryTemperature1.range[1] ?? 100}
+                            title="Rectifier" 
+                            getValue={rectifierTemperature.getUpdate}
+                            safeRangeMin={rectifierTemperature.range[0] ?? 0}
+                            safeRangeMax={rectifierTemperature.range[1] ?? 100}
                             units="ºC"
                         />
-                    </IndicatorStack>
+                    </IndicatorStack> */}
                 </div>
             </div>
         </Window>

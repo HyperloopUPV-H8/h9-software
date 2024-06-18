@@ -30,9 +30,12 @@
 .brakesContainer {
     display: flex;
     justify-content: center;
+    gap: 1.5rem;
 }
 
 .brakesColumn {
     display: flex;
     flex-direction: column;
+    height: fit-content;
+    gap: 1rem;
 }

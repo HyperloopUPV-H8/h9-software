@@ -53,7 +53,6 @@ export const App = () => {
                         <Sidebar
                             items={[
                                 { path: "/vehicle", icon: <Wheel /> },
-                                // { path: "/tube", icon: <Tube /> },
                                 { path: "/cameras", icon: <Cameras /> },
                             ]}
                         />

@@ -2,11 +2,12 @@
 
 .obccu {
     min-width: fit-content;
+    width: 100%;
 }
 
 .batteryRow {
     display: flex;
-    flex: 1;
+    justify-content: center;
     gap: 1rem;
 }
 
@@ -17,7 +18,6 @@
     padding: .4rem;
     gap: .5rem;
     background-color: hsla(207, 89%, 96%, 1);
-    width: 100%;
 }
 
 .connectorIndicator {

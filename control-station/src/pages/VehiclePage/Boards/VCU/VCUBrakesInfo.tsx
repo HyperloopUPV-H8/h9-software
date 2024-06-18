@@ -4,15 +4,19 @@ import { useMeasurementsStore, VcuMeasurements } from "common";
 import { IndicatorStack } from "components/IndicatorStack/IndicatorStack";
 import { BarIndicator } from "components/BarIndicator/BarIndicator";
 import thermometerIcon from "assets/svg/thermometer-filled.svg";
-import { BreakVisualizer } from "components/BreakVisualizer/BreakVisualizer";
+import { BrakeVisualizer } from "components/BrakeVisualizer/BrakeVisualizer";
 
 export const VCUBrakesInfo = () => {
 
     const getNumericMeasurementInfo = useMeasurementsStore(state => state.getNumericMeasurementInfo);
+    const getBooleanMeasurementInfo = useMeasurementsStore(state => state.getBooleanMeasurementInfo);
+    const reed1 = getBooleanMeasurementInfo(VcuMeasurements.reed1);
+    const reed2 = getBooleanMeasurementInfo(VcuMeasurements.reed2);
+    const reed3 = getBooleanMeasurementInfo(VcuMeasurements.reed2);
+    const reed4 = getBooleanMeasurementInfo(VcuMeasurements.reed2);
     const bottleTemp1 = getNumericMeasurementInfo(VcuMeasurements.bottleTemp1);
     const bottleTemp2 = getNumericMeasurementInfo(VcuMeasurements.bottleTemp2);
     const highPressure = getNumericMeasurementInfo(VcuMeasurements.highPressure);
-
 
     return (
         <Window title="VCU">
@@ -20,12 +24,12 @@ export const VCUBrakesInfo = () => {
 
                 <div className={styles.brakesContainer}>
                     <div className={styles.brakesColumn}>
-                        <BreakVisualizer active={false} rotation="left" />
-                        <BreakVisualizer active={false} rotation="left" />
+                        <BrakeVisualizer getStatus={reed1.getUpdate} rotation="left" />
+                        <BrakeVisualizer getStatus={reed2.getUpdate} rotation="left" />
                     </div>
                     <div className={styles.brakesColumn}>
-                        <BreakVisualizer active={false} rotation="right" />
-                        <BreakVisualizer active={false} rotation="right" />
+                        <BrakeVisualizer getStatus={reed3.getUpdate} rotation="right" />
+                        <BrakeVisualizer getStatus={reed4.getUpdate} rotation="right" />
                     </div>
                 </div>
 

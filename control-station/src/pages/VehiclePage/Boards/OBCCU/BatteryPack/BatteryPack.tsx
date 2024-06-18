@@ -35,7 +35,7 @@ export const BatteryPack = memo((
         <IndicatorStack>
             <BarIndicator
                 icon={batteryIcon}
-                title="State of Charge"
+                title="SoC"
                 getValue = {stateOfChargeMeasurement.getUpdate}
                 safeRangeMin={stateOfChargeMeasurement.range[0]!!}
                 safeRangeMax={stateOfChargeMeasurement.range[1]!!}

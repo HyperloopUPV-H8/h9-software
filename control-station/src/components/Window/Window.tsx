@@ -6,7 +6,7 @@ type Props = {
     children?: React.ReactNode;
 };
 
-export const Window = ({ title, height, children }: Props) => {
+export const Window = ({ title, height = "fit", children }: Props) => {
     return (
         <article
             className={styles.window}
@@ -16,7 +16,7 @@ export const Window = ({ title, height, children }: Props) => {
                         ? "fit-content"
                         : height == "fill"
                         ? "100%"
-                        : undefined,
+                        : "",
             }}
         >
             <header className={styles.header}>{title}</header>

@@ -1,7 +1,7 @@
 import {
     MeasurementId,
     NumericMeasurementInfo,
-    UpdateFunction,
+    UpdateFunctionNumeric,
     useGlobalTicker,
 } from 'common';
 import {
@@ -15,7 +15,7 @@ import { useEffect, useRef } from 'react';
 
 type DataSerieAndUpdater = Map<
     MeasurementId,
-    [ISeriesApi<'Line'>, UpdateFunction]
+    [ISeriesApi<'Line'>, UpdateFunctionNumeric]
 >;
 
 interface Props {

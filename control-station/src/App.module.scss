@@ -1,8 +1,9 @@
 @use "src/styles/colors";
 
 .appWrapper {
-    width: 100vw;
+    max-width: 100vw;
     height: 100vh;
     display: flex;
     background-color: var(--primary-95);
+    overflow-x: scroll;
 }

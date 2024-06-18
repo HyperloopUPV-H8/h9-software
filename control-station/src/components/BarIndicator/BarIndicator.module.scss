@@ -2,7 +2,7 @@
 
 .container {
     position: relative;
-    min-height: 1.3rem;
+    min-height: 1.8rem;
     width: 100%;
     background-color: #000;
     overflow: hidden;
@@ -44,20 +44,21 @@
 
 .value {
     flex: 1;
-    opacity: .8;
+    opacity: .7;
     font-size: map-get($map: fonts.$font-sizes, $key: small);
 }
 
 .unit {
     flex: 1;
+    opacity: .7;
     font-size: .8rem;
 }
 
 .icon {
     display: flex;
     justify-content: center;
-    opacity: .7;
-    width: .4rem;
+    opacity: .6;
+    width: .7rem;
 }
 
 .iconName {
