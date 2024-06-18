@@ -1,0 +1,43 @@
+{
+    "name": "@hyperloop-upv/common-front",
+    "version": "2.0.24",
+    "type": "module",
+    "files": [
+        "dist"
+    ],
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-icons": "^4.9.0",
+        "react-use-websocket": "^3.0.0",
+        "@react-spring/web": "^9.7.2",
+        "react-redux": "^8.0.5",
+        "@reduxjs/toolkit": "^1.9.5",
+        "@types/lodash": "^4.14.194",
+        "@types/node": "^18.16.1",
+        "@types/react": "^18.2.0",
+        "@zerollup/ts-transform-paths": "^1.7.18",
+        "rollup-plugin-postcss": "^4.0.2",
+        "sass": "^1.62.1",
+        "ttypescript": "^1.5.15",
+        "typescript": "^5.0.2",
+        "vite": "^4.3.2",
+        "@rollup/plugin-typescript": "^11.1.0",
+        "@vitejs/plugin-react": "^4.0.0",
+        "lodash": "^4.17.21",
+        "math": "^0.0.3",
+        "rollup-plugin-import-map": "^3.0.0",
+        "rollup-plugin-includepaths": "^0.2.4",
+        "rollup-plugin-typescript-paths": "^1.4.0",
+        "rollup-plugin-typescript2": "^0.34.1",
+        "tslib": "^2.5.0",
+        "vite-plugin-svgr": "^3.2.0",
+        "vite-tsconfig-paths": "^4.2.0"
+    }
+}

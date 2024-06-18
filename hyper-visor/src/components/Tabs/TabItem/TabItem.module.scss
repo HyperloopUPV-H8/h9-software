@@ -1,0 +1,11 @@
+.tabItem {
+    all: unset;
+    padding: 0.2rem 0.7rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+}
+
+.active {
+    background-color: var(--tertiary-65);
+    color: white;
+}

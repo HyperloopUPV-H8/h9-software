@@ -1,0 +1,31 @@
+import { createFilter } from "@rollup/pluginutils";
+import fs from "fs";
+import { transformWithEsbuild } from "vite";
+export default function viteSvgr({ exportAsDefault, svgrOptions, esbuildOptions, include = "**/*.svg", exclude, } = {}) {
+    const filter = createFilter(include, exclude);
+    return {
+        name: "vite-plugin-svgr",
+        async transform(code, id) {
+            if (filter(id)) {
+                const { transform } = await import("@svgr/core");
+                const { default: jsx } = await import("@svgr/plugin-jsx");
+                const svgCode = await fs.promises.readFile(id.replace(/\?.*$/, ""), "utf8");
+                const componentCode = await transform(svgCode, svgrOptions, {
+                    filePath: id,
+                    caller: {
+                        previousExport: exportAsDefault ? null : code,
+                        defaultPlugins: [jsx],
+                    },
+                });
+                const res = await transformWithEsbuild(componentCode, id, {
+                    loader: "jsx",
+                    ...esbuildOptions,
+                });
+                return {
+                    code: res.code,
+                    map: null, // TODO:
+                };
+            }
+        },
+    };
+}

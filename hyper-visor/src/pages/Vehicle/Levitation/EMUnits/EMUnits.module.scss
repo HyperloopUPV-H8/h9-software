@@ -1,0 +1,14 @@
+.hems {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.tags {
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;
+    column-gap: 3rem;
+    row-gap: 1.5rem;
+}

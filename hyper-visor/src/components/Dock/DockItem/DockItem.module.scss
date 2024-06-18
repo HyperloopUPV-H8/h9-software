@@ -1,0 +1,12 @@
+.dockItem {
+    display: flex;
+    align-items: center;
+
+    font-size: 1.2rem;
+    color: var(--primary-80);
+    cursor: pointer;
+}
+
+.active {
+    color: var(--tertiary-65);
+}

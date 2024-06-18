@@ -1,0 +1,47 @@
+.tempWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rangeBarWrapper {
+    border: 2px solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    .content {
+        width: 100%;
+        background-color: white;
+    }
+}
+
+.range {
+    border-color: var(--stable-60);
+    background-color: var(--stable-60);
+}
+
+.content {
+    transition: height 0.3s linear;
+}
+
+.temp {
+    border-color: var(--fault-60);
+    background-color: var(--fault-60);
+}
+
+.bulb {
+    flex-shrink: 0;
+    margin-top: -110%;
+    width: 150%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    z-index: 1;
+    background-color: var(--fault-60);
+}
+
+.wrapper {
+    height: 100%;
+}

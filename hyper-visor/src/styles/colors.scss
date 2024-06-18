@@ -1,0 +1,29 @@
+@use "sass:color";
+
+$key-colors: (
+    primary: hsl(189, 25%, 40%),
+    secondary: hsl(202, 15%, 30%),
+    tertiary: hsl(27, 90%, 40%),
+    stable: hsl(73, 68%, 40%),
+    fault: hsl(0, 68%, 40%),
+    warning: hsl(49, 90%, 40%),
+    neutral: hsl(0, 0%, 40%),
+    text: hsl(202, 15%, 30%),
+    secondarytext: hsl(205, 8%, 65%),
+    tag: hsl(180, 20%, 99%),
+);
+
+$lightnesses: 0, 10, 15, 20, 30, 40, 50, 55, 60, 65, 70, 80, 85, 90, 95, 96, 99,
+    100;
+
+@mixin colors {
+    @each $name, $color in $key-colors {
+        @each $lightness in $lightnesses {
+            --#{$name}-#{$lightness}: hsl(
+                #{color.hue($color)},
+                #{color.saturation($color)},
+                #{$lightness}#{"%"}
+            );
+        }
+    }
+}

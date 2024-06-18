@@ -1,0 +1,12 @@
+.imageTagWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.image {
+    align-self: center;
+    object-fit: contain;
+}

@@ -1,0 +1,22 @@
+.pump {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: fit-content;
+    padding: 1rem 1.5rem;
+    font-size: 2rem;
+    background-color: white;
+    border-radius: 1.5rem;
+    filter: var(--shadow);
+}
+
+.state {
+    font-weight: 700;
+}
+
+.fanIcon {
+    font-size: 1.5rem;
+    color: var(--primary-30);
+}

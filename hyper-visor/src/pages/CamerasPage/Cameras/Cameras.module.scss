@@ -1,0 +1,11 @@
+.cameras {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.camera {
+    background-color: var(--primary-85);
+    border-radius: 1rem;
+    //overflow: hidden;
+    filter: var(--shadow);
+}

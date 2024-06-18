@@ -1,0 +1,11 @@
+.propulsion {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    max-width: 100%;
+}
+
+.chart {
+    filter: var(--shadow);
+}

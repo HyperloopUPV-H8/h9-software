@@ -1,0 +1,13 @@
+.gaugeTagWrapper {
+    display: grid;
+    grid-template-columns: min-content;
+    justify-items: center;
+    align-items: center;
+    margin-bottom: -1.87em;
+}
+
+.gauge {
+    grid-row-start: 1;
+    grid-column-start: 1;
+    font-size: 10em;
+}
