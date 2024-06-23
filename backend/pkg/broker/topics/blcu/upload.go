@@ -8,12 +8,19 @@ import (
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/websocket"
 )
 
-const UploadName abstraction.BrokerTopic = "blcu/upload"
+const (
+	UploadName        abstraction.BrokerTopic = "blcu/upload"
+	UploadRequestName                         = "blcu/uploadRequest"
+)
 
 type Upload struct {
 	pool   *websocket.Pool
 	api    abstraction.BrokerAPI
 	client websocket.ClientId
+}
+
+func NewUploadTopic() *Upload {
+	return &Upload{}
 }
 
 func (upload *Upload) Topic() abstraction.BrokerTopic {
@@ -26,7 +33,7 @@ type UploadRequest struct {
 }
 
 func (request UploadRequest) Topic() abstraction.BrokerTopic {
-	return "blcu/uploadRequest"
+	return UploadRequestName
 }
 
 func (upload *Upload) Push(push abstraction.BrokerPush) error {
@@ -79,7 +86,7 @@ func (upload *Upload) handleUpload(message *websocket.Message) error {
 		return err
 	}
 
-	pushErr := upload.api.UserPush(uploadRequest)
+	pushErr := upload.api.UserPush(abstraction.BrokerPush(uploadRequest))
 	return pushErr
 }
 

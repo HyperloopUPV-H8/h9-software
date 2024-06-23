@@ -198,7 +198,6 @@ func (vehicle *Vehicle) UserPush(push abstraction.BrokerPush) error {
 				BoardEvent: boards.AckId,
 				Board:      upload.Board,
 				Data:       upload.Data,
-				Length:     len(upload.Data),
 			},
 		))
 

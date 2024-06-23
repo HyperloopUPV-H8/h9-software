@@ -6,6 +6,7 @@ import (
 	"encoding/binary"
 	"flag"
 	"fmt"
+	blcu_topic "github.com/HyperloopUPV-H8/h9-backend/pkg/broker/topics/blcu"
 	"log"
 	"net"
 	"net/http"
@@ -165,12 +166,16 @@ func main() {
 	connectionTopic := connection_topic.NewUpdateTopic()
 	orderTopic := order_topic.NewSendTopic()
 	loggerTopic := logger_topic.NewEnableTopic()
+
 	boardIdToBoard := make(map[abstraction.BoardId]string)
 	for name, id := range info.BoardIds {
 		boardIdToBoard[abstraction.BoardId(id)] = name
 	}
 	messageTopic := message_topic.NewUpdateTopic(boardIdToBoard)
+
 	stateOrderTopic := order_topic.NewState(idToBoard, trace.Logger)
+	blcuDownloadTopic := blcu_topic.NewDownloadTopic()
+	blcuUploadTopic := blcu_topic.NewUploadTopic()
 
 	broker.AddTopic(data_topic.UpdateName, dataTopic)
 	broker.AddTopic(connection_topic.UpdateName, connectionTopic)
@@ -179,6 +184,8 @@ func main() {
 	broker.AddTopic(logger_topic.EnableName, loggerTopic)
 	broker.AddTopic(logger_topic.ResponseName, loggerTopic)
 	broker.AddTopic(message_topic.UpdateName, messageTopic)
+	broker.AddTopic(blcu_topic.DownloadName, blcuDownloadTopic)
+	broker.AddTopic(blcu_topic.UploadName, blcuUploadTopic)
 
 	connections := make(chan *websocket.Client)
 	upgrader := websocket.NewUpgrader(connections, trace.Logger)
