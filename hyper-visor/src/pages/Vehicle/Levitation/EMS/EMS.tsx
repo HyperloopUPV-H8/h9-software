@@ -1,13 +1,13 @@
-import { NumericMeasurement } from "common";
+import { NumericMeasurement, NumericMeasurementInfo } from "common";
 import { EMUnits } from "../EMUnits/EMUnits";
 import { ImageTag } from "../ImageTag/ImageTag";
 import emsUrl from "assets/images/EMS.png";
 
 type Props = {
-    m1: NumericMeasurement;
-    m2: NumericMeasurement;
-    m3: NumericMeasurement;
-    m4: NumericMeasurement;
+    m1: NumericMeasurementInfo;
+    m2: NumericMeasurementInfo;
+    m3: NumericMeasurementInfo;
+    m4: NumericMeasurementInfo;
 };
 
 const IMAGE_WIDTH = "7rem";

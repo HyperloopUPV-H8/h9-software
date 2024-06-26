@@ -13,7 +13,6 @@ export const Value = ({ getUpdate, units }: Props) => {
 
     useGlobalTicker(() => {
         setValue(getUpdate());
-        console.log("Value updated");
     })
 
     return (
