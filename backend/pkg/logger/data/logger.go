@@ -1,9 +1,7 @@
 package data
 
 import (
-	"encoding/csv"
 	"fmt"
-	"io"
 	"os"
 	"path"
 	"strconv"
@@ -13,6 +11,7 @@ import (
 
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 	loggerHandler "github.com/HyperloopUPV-H8/h9-backend/pkg/logger"
+	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger/file"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/transport/packet/data"
 )
 
@@ -25,8 +24,8 @@ type Logger struct {
 	// An atomic boolean is used in order to use CompareAndSwap in the Start and Stop methods
 	running  *atomic.Bool
 	fileLock *sync.RWMutex
-	// valueFileSlice is a map that contains the file of each value
-	valueFileSlice map[data.ValueName]io.WriteCloser
+	// saveFiles is a map that contains the file of each value
+	saveFiles map[data.ValueName]*file.CSV
 }
 
 // Record is a struct that implements the abstraction.LoggerRecord interface
@@ -41,9 +40,9 @@ func (*Record) Name() abstraction.LoggerName { return Name }
 
 func NewLogger() *Logger {
 	logger := &Logger{
-		valueFileSlice: make(map[data.ValueName]io.WriteCloser),
-		running:        &atomic.Bool{},
-		fileLock:       &sync.RWMutex{},
+		saveFiles: make(map[data.ValueName]*file.CSV),
+		running:   &atomic.Bool{},
+		fileLock:  &sync.RWMutex{},
 	}
 
 	logger.running.Store(false)
@@ -83,75 +82,76 @@ func (sublogger *Logger) PushRecord(record abstraction.LoggerRecord) error {
 		}
 	}
 
-	valueMap := dataRecord.Packet.GetValues()
+	writeErr := error(nil)
+	for valueName, value := range dataRecord.Packet.GetValues() {
 
-	sublogger.fileLock.Lock()
-	defer sublogger.fileLock.Unlock()
-
-	writerErr := error(nil)
-	for valueName, value := range valueMap {
-
-		timestamp := dataRecord.Packet.Timestamp()
-
-		var val string
-
-		switch v := value.(type) {
+		var valueRepresentation string
+		switch value := value.(type) {
 		case numeric:
-			val = strconv.FormatFloat(v.Value(), 'f', -1, 64)
-
+			valueRepresentation = strconv.FormatFloat(value.Value(), 'f', -1, 64)
 		case data.BooleanValue:
-			val = strconv.FormatBool(v.Value())
-
+			valueRepresentation = strconv.FormatBool(value.Value())
 		case data.EnumValue:
-			val = string(v.Variant())
+			valueRepresentation = string(value.Variant())
 		}
 
-		file, ok := sublogger.valueFileSlice[valueName]
-		if !ok {
-			filename := path.Join(
-				"logger", "data",
-				loggerHandler.Timestamp.Format(loggerHandler.TimestampFormat),
-				fmt.Sprintf("%s.csv", valueName),
-			)
-			err := os.MkdirAll(path.Dir(filename), os.ModePerm)
-			if err != nil {
-				return loggerHandler.ErrCreatingAllDir{
-					Name:      Name,
-					Timestamp: time.Now(),
-					Path:      filename,
-				}
-			}
-
-			f, err := os.Create(path.Join(filename))
-			if err != nil {
-				return loggerHandler.ErrCreatingFile{
-					Name:      Name,
-					Timestamp: time.Now(),
-					Inner:     err,
-				}
-			}
-			sublogger.valueFileSlice[valueName] = f
-			file = f
+		saveFile, err := sublogger.getFile(valueName)
+		if err != nil {
+			return err
 		}
-		writer := csv.NewWriter(file) // TODO! use map/slice of writer
 
-		err := writer.Write([]string{
-			fmt.Sprint(timestamp.UnixMilli()),
+		err = saveFile.Write([]string{
+			fmt.Sprint(dataRecord.Packet.Timestamp().UnixMilli()),
 			dataRecord.From,
 			dataRecord.To,
-			val,
+			valueRepresentation,
 		})
+		saveFile.Flush()
+
 		if err != nil {
-			writerErr = loggerHandler.ErrWritingFile{
+			writeErr = loggerHandler.ErrWritingFile{
 				Name:      Name,
 				Timestamp: time.Now(),
 				Inner:     err,
 			}
-			fmt.Println(writerErr)
+			fmt.Println(writeErr)
 		}
-		writer.Flush()
 	}
-	return writerErr
+	return writeErr
+}
+
+func (sublogger *Logger) getFile(valueName data.ValueName) (*file.CSV, error) {
+	sublogger.fileLock.Lock()
+	defer sublogger.fileLock.Unlock()
+
+	valueFile, ok := sublogger.saveFiles[valueName]
+	if ok {
+		return valueFile, nil
+	}
+
+	valueFileRaw, err := sublogger.createFile(valueName)
+	sublogger.saveFiles[valueName] = file.NewCSV(valueFileRaw)
+
+	return sublogger.saveFiles[valueName], err
+}
+
+func (sublogger *Logger) createFile(valueName data.ValueName) (*os.File, error) {
+	filename := path.Join(
+		"logger", "data",
+		loggerHandler.Timestamp.Format(loggerHandler.TimestampFormat),
+		fmt.Sprintf("%s.csv", valueName),
+	)
+
+	err := os.MkdirAll(path.Dir(filename), os.ModePerm)
+	if err != nil {
+		return nil, loggerHandler.ErrCreatingAllDir{
+			Name:      Name,
+			Timestamp: time.Now(),
+			Path:      filename,
+		}
+	}
+
+	return os.Create(path.Join(filename))
 }
 
 func (sublogger *Logger) PullRecord(abstraction.LoggerRequest) (abstraction.LoggerRecord, error) {
@@ -165,7 +165,7 @@ func (sublogger *Logger) Stop() error {
 	}
 
 	closeErr := error(nil)
-	for value, file := range sublogger.valueFileSlice {
+	for valueName, file := range sublogger.saveFiles {
 		err := file.Close()
 		if err != nil {
 			closeErr = loggerHandler.ErrClosingFile{
@@ -173,11 +173,11 @@ func (sublogger *Logger) Stop() error {
 				Timestamp: time.Now(),
 			}
 
-			fmt.Println(value, ": ", closeErr)
+			fmt.Println(valueName, ": ", closeErr)
 		}
 	}
 
-	sublogger.valueFileSlice = make(map[data.ValueName]io.WriteCloser, len(sublogger.valueFileSlice))
+	sublogger.saveFiles = make(map[data.ValueName]*file.CSV, len(sublogger.saveFiles))
 
 	fmt.Println("Logger stopped")
 	return closeErr

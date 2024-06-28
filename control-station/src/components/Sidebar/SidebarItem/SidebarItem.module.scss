@@ -1,15 +1,13 @@
-@use "src/styles/colors";
+@use 'src/styles/colors';
 
-.iconWrapper {
+.link {
+    color: colors.getColor('primary', 60);
+
     > * {
         font-size: 0.6rem;
     }
 }
 
-.link {
-    color: colors.getColor("primary", 60);
-}
-
 .active {
-    color: colors.getColor("tertiary", 60);
+    color: colors.getColor('tertiary', 60);
 }

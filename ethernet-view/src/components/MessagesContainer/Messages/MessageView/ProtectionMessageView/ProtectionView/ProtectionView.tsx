@@ -1,5 +1,5 @@
-import styles from "./ProtectionView.module.scss";
-import { Protection } from "common";
+import styles from './ProtectionView.module.scss';
+import { Protection } from 'common';
 
 type Props = {
     protection: Protection;
@@ -15,37 +15,37 @@ export const ProtectionView = ({ protection }: Props) => {
 
 function getProtectionText(protection: Protection) {
     switch (protection.kind) {
-        case "OUT_OF_BOUNDS":
+        case 'OUT_OF_BOUNDS':
             return (
                 <>
                     <span>
-                        {" "}
+                        {' '}
                         Want: [{protection.data.bounds[0].toFixed(
                             DECIMALS
                         )}, {protection.data.bounds[1].toFixed(DECIMALS)}]
-                    </span>{" "}
+                    </span>{' '}
                     <span>Got: {protection.data.value.toFixed(DECIMALS)}</span>
                 </>
             );
-        case "UPPER_BOUND":
+        case 'UPPER_BOUND':
             return (
                 <>
                     <span>
-                        Want: x {"<"} {protection.data.bound.toFixed(DECIMALS)}
-                    </span>{" "}
+                        Want: x {'<'} {protection.data.bound.toFixed(DECIMALS)}
+                    </span>{' '}
                     <span>Got: {protection.data.value.toFixed(DECIMALS)}</span>
                 </>
             );
-        case "LOWER_BOUND":
+        case 'LOWER_BOUND':
             return (
                 <>
                     <span>
-                        Want: x {">"} {protection.data.bound.toFixed(DECIMALS)}
-                    </span>{" "}
+                        Want: x {'>'} {protection.data.bound.toFixed(DECIMALS)}
+                    </span>{' '}
                     <span>Got: {protection.data.value.toFixed(DECIMALS)}</span>
                 </>
             );
-        case "EQUALS":
+        case 'EQUALS':
             return (
                 <>
                     <span>
@@ -53,23 +53,24 @@ function getProtectionText(protection: Protection) {
                     </span>
                 </>
             );
-        case "NOT_EQUALS":
+        case 'NOT_EQUALS':
             return (
                 <>
                     <span>
-                        Must be {protection.data.want.toFixed(DECIMALS)} but is{" "}
+                        Must be {protection.data.want.toFixed(DECIMALS)} but is{' '}
                         {protection.data.value.toFixed(DECIMALS)}
                     </span>
                 </>
             );
-        case "TIME_ACCUMULATION":
+        case 'TIME_ACCUMULATION':
             return (
                 <span>
-                    Value was {protection.data.value.toFixed(DECIMALS)} for{" "}
+                    Value was {protection.data.value.toFixed(DECIMALS)} for{' '}
                     {protection.data.timelimit.toFixed(DECIMALS)} seconds
                 </span>
             );
-        case "ERROR_HANDLER":
+        case 'ERROR_HANDLER':
+        case 'WARNING':
             return <span>{protection.data}</span>;
     }
 }

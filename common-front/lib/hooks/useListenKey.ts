@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from 'react';
 
 export function useListenKey(
     key: string,
@@ -17,11 +17,11 @@ export function useListenKey(
 
     useEffect(() => {
         if (listen) {
-            document.addEventListener("keydown", listener);
+            document.addEventListener('keydown', listener);
         }
 
         return () => {
-            document.removeEventListener("keydown", listener);
+            document.removeEventListener('keydown', listener);
         };
     }, [listen, key, listener, callback]);
 }

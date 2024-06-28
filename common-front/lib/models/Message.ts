@@ -11,22 +11,22 @@ type AbstractMessage = {
 };
 
 type FaultMessage = AbstractMessage & {
-    kind: "fault";
+    kind: 'fault';
     payload: Protection;
 };
 
 type WarningMessage = AbstractMessage & {
-    kind: "warning";
+    kind: 'warning';
     payload: Protection;
 };
 
 type OkMessage = AbstractMessage & {
-    kind: "ok";
+    kind: 'ok';
     payload: Protection;
-}
+};
 
 export type InfoMessage = AbstractMessage & {
-    kind: "info";
+    kind: 'info';
     payload: string;
 };
 
@@ -37,10 +37,11 @@ export type Protection =
     | Equals
     | NotEquals
     | Timelimit
-    | Error;
+    | Error
+    | Warning;
 
 type OutOfBounds = {
-    kind: "OUT_OF_BOUNDS";
+    kind: 'OUT_OF_BOUNDS';
     data: {
         bounds: [number, number];
         value: number;
@@ -48,7 +49,7 @@ type OutOfBounds = {
 };
 
 type UpperBound = {
-    kind: "UPPER_BOUND";
+    kind: 'UPPER_BOUND';
     data: {
         bound: number;
         value: number;
@@ -56,7 +57,7 @@ type UpperBound = {
 };
 
 type LowerBound = {
-    kind: "LOWER_BOUND";
+    kind: 'LOWER_BOUND';
     data: {
         bound: number;
         value: number;
@@ -64,14 +65,14 @@ type LowerBound = {
 };
 
 type Equals = {
-    kind: "EQUALS";
+    kind: 'EQUALS';
     data: {
         value: number;
     };
 };
 
 type NotEquals = {
-    kind: "NOT_EQUALS";
+    kind: 'NOT_EQUALS';
     data: {
         want: number;
         value: number;
@@ -79,7 +80,7 @@ type NotEquals = {
 };
 
 type Timelimit = {
-    kind: "TIME_ACCUMULATION";
+    kind: 'TIME_ACCUMULATION';
     data: {
         value: number;
         bound: number;
@@ -88,7 +89,12 @@ type Timelimit = {
 };
 
 type Error = {
-    kind: "ERROR_HANDLER";
+    kind: 'ERROR_HANDLER';
+    data: string;
+};
+
+type Warning = {
+    kind: 'WARNING';
     data: string;
 };
 

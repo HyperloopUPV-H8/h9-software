@@ -33,13 +33,11 @@ func main() {
 	fmt.Println("Sending packets")
 
 	count := make(chan struct{}, 10000)
-	ticker := time.NewTicker(time.Millisecond * 1)
 	start := time.Now()
 	prev := time.Now()
 	go func() {
-		for range ticker.C {
-			packet := packetGenerator.CreateSinePacket()
-			// packet := []byte{10, 0, 20, 0, 20, 0, 20, 0, 20, 0}
+		for {
+			packet := packetGenerator.CreateRandomPacket()
 			fmt.Println(time.Since(prev))
 			prev = time.Now()
 

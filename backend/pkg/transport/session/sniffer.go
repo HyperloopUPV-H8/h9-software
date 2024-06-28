@@ -9,7 +9,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-const defaultBufferSize = 1500
+const defaultBufferSize = 4096
 
 // conversationCallback is called when a new conversation is detected, the conversation socket,
 // as well as the reader to get its packets, is provided through this callback.

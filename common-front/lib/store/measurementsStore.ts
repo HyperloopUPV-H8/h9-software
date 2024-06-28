@@ -1,4 +1,3 @@
-
 import {
     Measurement,
     NumericMeasurement,
@@ -14,7 +13,11 @@ import {
 } from '../adapters';
 import { create } from 'zustand';
 import { isNumericType } from '../BackendTypes';
-import { BooleanMeasurement, EnumMeasurement, NumericValue } from '../models/PodData/Measurement';
+import {
+    BooleanMeasurement,
+    EnumMeasurement,
+    NumericValue,
+} from '../models/PodData/Measurement';
 
 export type Measurements = Record<string, Measurement>;
 export type MeasurementId = string;
@@ -29,6 +32,7 @@ export type NumericMeasurementInfo = {
     readonly id: MeasurementId;
     readonly name: MeasurementName;
     readonly range: [number | null, number | null];
+    readonly warningRange: [number | null, number | null];
     readonly color: MeasurementColor;
     readonly units: MeasurementUnits;
     readonly getUpdate: UpdateFunctionNumeric;
@@ -85,7 +89,6 @@ export const useMeasurementsStore = create<MeasurementsStore>((set, get) => ({
      * @param {Record<string, PacketUpdate>} measurements
      */
     updateMeasurements: (measurements: Record<string, PacketUpdate>) => {
-
         const measurementsDraft = get().measurements;
 
         for (const update of Object.values(measurements)) {
@@ -165,7 +168,7 @@ export const useMeasurementsStore = create<MeasurementsStore>((set, get) => ({
         return get().measurements[id];
     },
 
-    getBooleanMeasurementInfo: (id: string) : BooleanMeasurementInfo => {
+    getBooleanMeasurementInfo: (id: string): BooleanMeasurementInfo => {
         const meas = get().measurements[id] as BooleanMeasurement;
         return {
             id: meas.id,
@@ -174,30 +177,31 @@ export const useMeasurementsStore = create<MeasurementsStore>((set, get) => ({
                 const meas = get().measurements[id] as BooleanMeasurement;
                 if (meas == undefined) return false;
                 return meas.value;
-            }
+            },
         };
     },
 
-    getEnumMeasurementInfo: (id: string) : EnumMeasurementInfo => {
+    getEnumMeasurementInfo: (id: string): EnumMeasurementInfo => {
         const meas = get().measurements[id] as EnumMeasurement;
         return {
             id: meas.id,
             name: meas.name,
             getUpdate: () => {
                 const meas = get().measurements[id] as EnumMeasurement;
-                if (meas == undefined) return "Default";
+                if (meas == undefined) return 'Default';
                 return meas.value;
-            }
+            },
         };
     },
 
-    getNumericMeasurementInfo: (id: string) : NumericMeasurementInfo => {
+    getNumericMeasurementInfo: (id: string): NumericMeasurementInfo => {
         const meas = get().measurements[id] as NumericMeasurement;
         return {
             id: meas.id,
             name: meas.name,
             units: meas.units,
             range: meas.safeRange,
+            warningRange: meas.warningRange,
             getUpdate: () => {
                 const meas = get().measurements[id] as NumericMeasurement;
                 if (meas == undefined) return 0;

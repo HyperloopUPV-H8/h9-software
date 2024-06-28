@@ -2,6 +2,10 @@ package message_test
 
 import (
 	"encoding/json"
+	"os"
+	"testing"
+	"time"
+
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/broker"
 	data "github.com/HyperloopUPV-H8/h9-backend/pkg/broker/topics/message"
@@ -10,9 +14,6 @@ import (
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/websocket"
 	ws "github.com/gorilla/websocket"
 	"github.com/rs/zerolog"
-	"os"
-	"testing"
-	"time"
 )
 
 func TestMessageTopic_Push(t *testing.T) {
@@ -82,7 +83,7 @@ func TestMessageTopic_ClientMessage(t *testing.T) {
 	messageTopic := data.NewUpdateTopic(map[abstraction.BoardId]string{})
 	messageTopic.SetAPI(api)
 
-	packet := protection.NewPacket(0, protection.Ok)
+	packet := protection.NewPacket(0, protection.OkSeverity)
 	payload := data.Push(packet, 0)
 	payloadBytes, _ := json.Marshal(payload)
 	messageTopic.ClientMessage(websocket.ClientId{0}, &websocket.Message{

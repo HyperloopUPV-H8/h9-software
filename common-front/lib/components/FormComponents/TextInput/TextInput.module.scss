@@ -2,21 +2,21 @@
     all: unset;
     flex: 1 1 0;
     min-width: 5rem;
-    padding: 0.4rem 0.5rem;
+    padding: 0.3rem 0.4rem;
     border-radius: 0.4rem;
     font: inherit;
     transition: border-color 0.1s linear;
     border-width: 1px;
     border-style: solid;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .valid {
-    border-color: hsla(112, 100%, 72%, 1);
+    border-color: rgb(95, 213, 77);
 }
 
 .invalid {
-    border-color: rgb(244, 90, 90);
+    border-color: rgb(212, 66, 66);
 }
 
 .disabled {

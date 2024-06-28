@@ -1,34 +1,30 @@
-import { clampAndNormalize } from "math";
-import { Arc } from "./Arc/Arc";
-import { BackgroundArc } from "./BackgroundArc/BackgroundArc";
-import styles from "components/GaugeTag/Gauge/Gauge.module.scss";
+import { clampAndNormalize } from 'math';
+import { Arc } from './Arc/Arc';
+import { BackgroundArc } from './BackgroundArc/BackgroundArc';
+import styles from 'components/GaugeTag/Gauge/Gauge.module.scss';
 
 type Props = {
     className: string;
+    id: string;
     sweep: number;
     strokeWidth: number;
-    value: number;
-    min: number;
-    max: number;
+    percentage: number;
 };
 
 export const Gauge = ({
     className,
+    id,
     sweep,
     strokeWidth,
-    value,
-    min,
-    max,
+    percentage,
 }: Props) => {
     const radius = 500;
-    const percentage = clampAndNormalize(value, min, max) * 100;
     return (
         <svg
             className={className}
             width="1em"
             height="1em"
             viewBox={`0 0 ${radius * 2} ${radius * 2}`}
-            xmlns="http://www.w3.org/2000/svg"
         >
             <Arc
                 className={styles.backgroundArc}
@@ -41,6 +37,7 @@ export const Gauge = ({
             <BackgroundArc
                 sweep={sweep}
                 className={styles.rainbowArc}
+                id={id}
                 percentage={percentage}
                 radius={radius}
                 strokeWidth={strokeWidth}

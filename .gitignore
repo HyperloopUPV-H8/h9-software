@@ -1,4 +1,5 @@
 build
+profiles
 
 # GOOGLE API KEY
 secret.json

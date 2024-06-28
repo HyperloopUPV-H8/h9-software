@@ -1,33 +1,47 @@
-@use "src/styles/colors";
+@use 'src/styles/colors';
 
-.sidebarWrapper {
-    width: fit-content;
+.sidebar {
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     justify-content: flex-start;
     align-items: center;
     gap: 1.4rem;
+
+    position: sticky;
+    top: 0;
+
+    max-height: 100vh;
+    height: 100vh;
+    width: fit-content;
+
     padding: 1rem 0.4rem;
-    background-color: colors.getColor("primary", 90);
-    border-right: 1px solid colors.getColor("primary", 80);
+
+    background-color: colors.getColor('primary', 90);
+    border-right: 1px solid colors.getColor('primary', 80);
 }
 
 .logo {
     font-size: 1.6rem;
-    color: colors.getColor("primary", 30);
+    color: colors.getColor('primary', 30);
 }
 
 .separator {
-    width: 46%;
+    width: 70%;
     height: 0.25rem;
     border-radius: 10rem;
-    background-color: colors.getColor("primary", 80);
+
+    margin: 0;
+
+    background-color: colors.getColor('primary', 80);
+
+    border: none;
+    appearance: none;
 }
 
 .items {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.5rem;
+    font-size: 2rem;
     gap: 1.5rem;
 }

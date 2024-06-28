@@ -3,6 +3,11 @@ package logger_test
 import (
 	"encoding/csv"
 	"fmt"
+	"os"
+	"path"
+	"testing"
+	"time"
+
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger/data"
@@ -13,10 +18,6 @@ import (
 	protectionPacketer "github.com/HyperloopUPV-H8/h9-backend/pkg/transport/packet/protection"
 	statePacketer "github.com/HyperloopUPV-H8/h9-backend/pkg/transport/packet/state"
 	"github.com/rs/zerolog"
-	"os"
-	"path"
-	"testing"
-	"time"
 )
 
 func TestLogger(t *testing.T) {
@@ -115,7 +116,7 @@ func TestLogger(t *testing.T) {
 	}
 
 	// Protection
-	protectionPacket := protectionPacketer.NewPacket(0, protectionPacketer.Ok)
+	protectionPacket := protectionPacketer.NewPacket(0, protectionPacketer.OkSeverity)
 	protectionPacket.Timestamp = &protectionPacketer.Timestamp{
 		Counter: 0,
 		Second:  0,

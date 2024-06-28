@@ -1,29 +1,43 @@
-.pcuSectionWrapper {
+.container {
+    display: flex;
+    flex-flow: column;
+    max-width: 670px;
+}
+.content {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
     width: 100%;
-    display: grid;
-    grid-template:
-        "velGauge accGauge" auto
-        "motorCurrent1 motorCurrent2" auto
-        "motorTemp boardTemp" auto / auto auto;
-    gap: 1.5rem;
-    overflow-y: auto;
+    margin: 1rem 0;
+}
 
-    > :nth-child(1) {
-        grid-area: velGauge;
-    }
-    > :nth-child(2) {
-        grid-area: accGauge;
-    }
-    > :nth-child(3) {
-        grid-area: motorCurrent1;
-    }
-    > :nth-child(4) {
-        grid-area: motorCurrent2;
-    }
-    > :nth-child(5) {
-        grid-area: motorTemp;
-    }
-    > :nth-child(6) {
-        grid-area: boardTemp;
-    }
+.current_display {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.current_chart {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+}
+
+.chart_title {
+    margin: 0;
+}
+
+.chart {
+    width: 100%;
+}
+
+.frequency {
+    max-width: 15rem;
 }

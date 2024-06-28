@@ -1,7 +1,0 @@
-<svg width="6em" height="3em" viewBox="0 0 87 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2 22H31" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-<path d="M85 22H56" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-<circle cx="29" cy="22" r="4" fill="currentColor"/>
-<circle cx="4" cy="4" r="4" transform="matrix(-1 0 0 1 61 18)" fill="currentColor"/>
-<line x1="29" y1="22.1716" x2="49.1716" y2="2" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-</svg>

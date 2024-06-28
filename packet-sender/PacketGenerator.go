@@ -74,28 +74,35 @@ func New() PacketGenerator {
 	return pg
 }
 
-// func (pg *PacketGenerator) CreateRandomPacket() []byte {
-// 	randomIndex := rand.Int63n(int64(len(pg.packets)))
-// 	randomPacket := pg.packets[randomIndex]
+func (pg *PacketGenerator) CreateRandomPacket() []byte {
+	randomIndex := rand.Int63n(int64(len(pg.packets)))
+	randomPacket := pg.packets[randomIndex]
 
-// 	buff := bytes.NewBuffer(make([]byte, 0))
+	buff := bytes.NewBuffer(make([]byte, 0))
 
-// 	binary.Write(buff, binary.LittleEndian, randomPacket.ID)
+	binary.Write(buff, binary.LittleEndian, randomPacket.ID)
 
-// 	for _, measurement := range randomPacket.Measurements {
-// 		if strings.Contains(measurement.Type, "enum") {
-// 			binary.Write(buff, binary.LittleEndian, uint8(1))
-// 		} else if measurement.Type != "string" {
-// 			number := mapNumberToRange(rand.Float64(), measurement.SafeRange, measurement.Type)
-// 			writeNumberAsBytes(number, measurement.Type, buff)
-// 		} else {
-// 			return nil
-// 		}
+	for _, measurement := range randomPacket.Measurements {
+		if strings.Contains(measurement.Type, "enum") {
+			binary.Write(buff, binary.LittleEndian, uint8(rand.Int63n(int64(len(strings.Split(strings.ReplaceAll(strings.TrimSuffix(strings.TrimPrefix(measurement.Type, "enum("), ")"), " ", ""), ","))))))
+		} else if measurement.Type == "bool" {
+			binary.Write(buff, binary.LittleEndian, rand.Int31n(2) == 1)
+		} else if measurement.Type != "string" {
+			var number float64
+			if len(measurement.WarningRange) == 0 {
+				number = mapNumberToRange(rand.Float64(), measurement.WarningRange, measurement.Type)
+			} else {
+				number = mapNumberToRange(rand.Float64(), []float64{measurement.WarningRange[0] * 0.8, measurement.WarningRange[1] * 1.2}, measurement.Type)
+			}
+			writeNumberAsBytes(number, measurement.Type, buff)
+		} else {
+			return nil
+		}
 
-// 	}
+	}
 
-// 	return buff.Bytes()
-// }
+	return buff.Bytes()
+}
 
 func (pg *PacketGenerator) CreateSinePacket() []byte {
 	randomIndex := rand.Int63n(int64(len(pg.packets)))

@@ -72,9 +72,9 @@ func (packet *Packet) Severity() Severity {
 type Severity string
 
 const (
-	Fault   Severity = "fault"
-	Warning Severity = "warning"
-	Ok      Severity = "ok"
+	FaultSeverity   Severity = "fault"
+	WarningSeverity Severity = "warning"
+	OkSeverity      Severity = "ok"
 )
 
 // Type is the type of the data that is being tracked by a protection packet.
@@ -109,6 +109,7 @@ const (
 	NotEqualsKind                    // [NotEquals]
 	ErrorHandlerKind                 // [ErrorHandler]
 	TimeAccumulationKind             // [TimeAccumulation]
+	WarningKind                      // [Warning]
 )
 
 // Data is a common interface to all the possible protection kinds.

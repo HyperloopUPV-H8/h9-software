@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 
 $key-colors: (
     primary: hsl(189, 25%, 40%),
@@ -15,10 +15,10 @@ $lightnesses: 0, 10, 15, 20, 30, 40, 50, 60, 70, 80, 85, 90, 95, 99, 100;
 @mixin globalColors {
     @each $name, $color in $key-colors {
         @each $lightness in $lightnesses {
-            --color-#{$name}-#{$lightness}: hsl(
+            --color-#{"" + $name}-#{$lightness}: hsl(
                 #{color.hue($color)},
                 #{color.saturation($color)},
-                #{$lightness}#{"%"}
+                #{$lightness}#{'%'}
             );
         }
     }

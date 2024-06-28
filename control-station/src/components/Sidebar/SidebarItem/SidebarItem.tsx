@@ -1,5 +1,5 @@
-import styles from "components/Sidebar/SidebarItem/SidebarItem.module.scss";
-import { NavLink } from "react-router-dom";
+import styles from 'components/Sidebar/SidebarItem/SidebarItem.module.scss';
+import { NavLink } from 'react-router-dom';
 
 export type SidebarItemData = {
     path: string;
@@ -15,9 +15,9 @@ export const SidebarItem = ({ item, isActive }: Props) => {
     return (
         <NavLink
             to={item.path}
-            className={`${styles.link} ${isActive ? styles.active : ""}`}
+            className={`${styles.link} ${isActive && styles.active}`}
         >
-            <div className={styles.iconWrapper}> {item.icon}</div>
+            {item.icon}
         </NavLink>
     );
 };

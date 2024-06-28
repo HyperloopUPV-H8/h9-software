@@ -27,7 +27,10 @@ export type MeasurementAdapter =
 
 export type NumericMeasurementAdapter = Omit<NumericMeasurement, 'value'>;
 export type BooleanMeasurementAdapter = Omit<BooleanMeasurement, 'value'>;
-export type EnumMeasurementAdapter = Omit<EnumMeasurement, 'value'>;
+export type EnumMeasurementAdapter = { options: string[] } & Omit<
+    EnumMeasurement,
+    'value'
+>;
 
 export function createPodDataFromAdapter(adapter: PodDataAdapter): PodData {
     const boards: Board[] = Object.values(adapter.boards).map(
@@ -117,7 +120,7 @@ export function getEnumMeasurement(
         id: id,
         name: adapter.name,
         type: 'enum',
-        value: 'Default',
+        value: adapter.options[0],
     };
 }
 

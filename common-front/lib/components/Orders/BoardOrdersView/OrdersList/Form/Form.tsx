@@ -1,13 +1,13 @@
-import { Field } from "./Field/Field";
-import styles from "./Form.module.scss";
-import { Header, HeaderInfo } from "./Header/Header";
-import { useSpring } from "@react-spring/web";
-import { useListenKey } from "../../../../../hooks/useListenKey";
-import { useState } from "react";
-import { useForm, Form as FormType } from "../../../../..";
+import { Field } from './Field/Field';
+import styles from './Form.module.scss';
+import { Header, HeaderInfo } from './Header/Header';
+import { useSpring } from '@react-spring/web';
+import { useListenKey } from '../../../../../hooks/useListenKey';
+import { useState } from 'react';
+import { useForm, Form as FormType } from '../../../../..';
 
 type Props = {
-    initialForm: Omit<FormType, "isValid">;
+    initialForm: Omit<FormType, 'isValid'>;
     onSubmit: (form: FormType) => void;
 };
 
@@ -16,7 +16,7 @@ export const Form = ({ initialForm, onSubmit }: Props) => {
     const [form, handleEvent] = useForm(initialForm);
     const [isOpen, setIsOpen] = useState(false);
     const [springs, api] = useSpring(() => ({
-        from: { filter: "brightness(1)" },
+        from: { filter: 'brightness(1)' },
         config: {
             tension: 600,
         },
@@ -24,8 +24,8 @@ export const Form = ({ initialForm, onSubmit }: Props) => {
 
     function blinkHeader() {
         api.start({
-            from: { filter: "brightness(1.2)" },
-            to: { filter: "brightness(1)" },
+            from: { filter: 'brightness(1.2)' },
+            to: { filter: 'brightness(1)' },
         });
     }
 
@@ -36,8 +36,9 @@ export const Form = ({ initialForm, onSubmit }: Props) => {
         }
     }
 
+    // TODO: this should be kept in a global context, so that it can be called from anywhere in the app
     useListenKey(
-        " ",
+        ' ',
         () => {
             trySubmit();
         },
@@ -47,11 +48,11 @@ export const Form = ({ initialForm, onSubmit }: Props) => {
     const headerInfo: HeaderInfo =
         form.fields.length > 0
             ? {
-                  type: "toggable",
+                  type: 'toggable',
                   isOpen: isOpen,
                   toggleDropdown: () => setIsOpen((prevValue) => !prevValue),
               }
-            : { type: "fixed" };
+            : { type: 'fixed' };
 
     return (
         <div className={styles.formWrapper}>

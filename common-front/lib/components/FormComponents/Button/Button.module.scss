@@ -1,11 +1,12 @@
 .buttonWrapper {
-    flex: 1 1 0;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    padding: 0.5rem;
+    padding: 0.3rem;
     text-align: center;
+    font-size: 0.8rem;
+    font-weight: 500;
     border-radius: 0.5rem;
     background-color: var(--tertiary-60);
     color: white;

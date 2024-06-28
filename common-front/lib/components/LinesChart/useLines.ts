@@ -1,8 +1,8 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { dataToPath } from "./path";
-import { RangeArray } from "./RangeArray";
-import { useGlobalTicker } from "../../services/GlobalTicker/useGlobalTicker";
-import { Line, LineDescription } from "./types";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { dataToPath } from './path';
+import { RangeArray } from './RangeArray';
+import { useGlobalTicker } from '../../services/GlobalTicker/useGlobalTicker';
+import { Line, LineDescription } from './types';
 
 function getLargestRangeFromPartial(
     ranges: ReadonlyArray<readonly [number | null, number | null]>
@@ -24,7 +24,7 @@ export function useLines(
     const initialLargestRange = useMemo(
         () =>
             getLargestRangeFromPartial(
-                lineDescriptions.map((line) => line.range)
+                lineDescriptions.map((line) => line.warningRange)
             ),
         []
     );
@@ -60,7 +60,7 @@ export function useLines(
                 viewBoxHeight
             );
 
-            line.ref.setAttribute("d", path);
+            line.ref.setAttribute('d', path);
         });
     }, []);
 
@@ -131,26 +131,27 @@ function createLines(
             name: description.name,
             ref: pathElement,
             range: description.range,
+            warningRange: description.warningRange,
             getUpdate: () => description.getUpdate(),
             data:
                 lines.find((line) => description.id == line.id)?.data ??
                 new RangeArray([], length),
-            color: "red",
+            color: 'red',
         };
     });
 }
 
 function createPathElement(color: string, path: string): SVGPathElement {
     const pathElement = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "path"
+        'http://www.w3.org/2000/svg',
+        'path'
     );
 
-    pathElement.setAttribute("vector-effect", "non-scaling-stroke");
-    pathElement.setAttribute("stroke", color);
-    pathElement.setAttribute("stroke-width", "3");
-    pathElement.setAttribute("stroke-linejoin", "round");
-    pathElement.setAttribute("d", path);
+    pathElement.setAttribute('vector-effect', 'non-scaling-stroke');
+    pathElement.setAttribute('stroke', color);
+    pathElement.setAttribute('stroke-width', '3');
+    pathElement.setAttribute('stroke-linejoin', 'round');
+    pathElement.setAttribute('d', path);
     return pathElement;
 }
 

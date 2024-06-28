@@ -1,41 +1,41 @@
-import { EnumMeasurement, getEnumMeasurement, NumericMeasurement, useGlobalTicker, useMeasurementsStore } from "common";
-import styles from "./StateIndicator.module.scss"
-import { getStateFromEnum, State, stateToColorBackground } from "state";
-import { memo, useEffect, useRef, useState } from "react";
+import { useGlobalTicker, useMeasurementsStore } from 'common';
+import styles from './StateIndicator.module.scss';
+import { State, getState, stateToColor } from 'state';
+import { ReactNode, memo, useEffect, useRef, useState } from 'react';
 
 interface Props {
     measurementId: string;
-    icon?: string;
+    icon: string;
 }
 
-export const StateIndicator = memo(({measurementId, icon}: Props) => {
-    const getMeasurement = useMeasurementsStore(state => state.getMeasurement)
-    const [measurement, setMeasurement] = useState<EnumMeasurement>(getMeasurement(measurementId) as EnumMeasurement)
-    const state = useRef<State>(getStateFromEnum(measurement as EnumMeasurement))
+export const StateIndicator = memo(({ measurementId, icon }: Props) => {
+    const [measurement, measurementInfo] = useMeasurementsStore((state) => [
+        state.getMeasurement(measurementId),
+        state.getEnumMeasurementInfo(measurementId),
+    ]);
+
+    const state = useRef<State>(getState(measurement));
+
+    const [variant, setVariant] = useState(measurementInfo.getUpdate());
 
     useGlobalTicker(() => {
-        setMeasurement(getMeasurement(measurementId) as EnumMeasurement)
-    })
+        setVariant(measurementInfo.getUpdate());
+    });
 
     useEffect(() => {
-        state.current = getStateFromEnum(measurement as EnumMeasurement)
-    })
+        state.current = getState(measurement);
+    });
 
     return (
-        <div className={styles.wrapper}
-            style={{backgroundColor: stateToColorBackground[state.current]}}
+        <div
+            className={styles.state_indicator}
+            style={{ backgroundColor: stateToColor[state.current] }}
         >
-            <div className={styles.icon}>
-                <img src={icon} alt="State icon" />
-            </div>
+            <img className={styles.icon} src={icon} alt="State icon" />
 
-                <div className={styles.title}>
-                    {/* {measurement.type} */}
-                </div>
-                
-            <div className={styles.icon}>
-                <img src={icon} alt="State icon" />
-            </div>
+            <p className={styles.title}>{variant}</p>
+
+            <img className={styles.icon} src={icon} alt="State icon" />
         </div>
-    )
-})
+    );
+});

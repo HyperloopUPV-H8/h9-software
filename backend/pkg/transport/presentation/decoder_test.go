@@ -133,7 +133,7 @@ func TestDecoder(t *testing.T) {
 			)),
 			output: []abstraction.Packet{
 				func() abstraction.Packet {
-					p := protection.NewPacket(5, protection.Warning)
+					p := protection.NewPacket(5, protection.WarningSeverity)
 					p.Type = protection.Uint8Type
 					p.Kind = protection.OutOfBoundsKind
 					p.Name = "out of bounds"
@@ -154,7 +154,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(6, protection.Fault)
+					p := protection.NewPacket(6, protection.FaultSeverity)
 					p.Type = protection.FloatType
 					p.Kind = protection.AboveKind
 					p.Name = "upper bound"
@@ -174,7 +174,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(5, protection.Warning)
+					p := protection.NewPacket(5, protection.WarningSeverity)
 					p.Type = protection.IntType
 					p.Kind = protection.BelowKind
 					p.Name = "lower bound"
@@ -194,7 +194,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(6, protection.Fault)
+					p := protection.NewPacket(6, protection.FaultSeverity)
 					p.Type = protection.BoolType
 					p.Kind = protection.EqualsKind
 					p.Name = "equals"
@@ -214,7 +214,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(5, protection.Warning)
+					p := protection.NewPacket(5, protection.WarningSeverity)
 					p.Type = protection.CharType
 					p.Kind = protection.NotEqualsKind
 					p.Name = "not equals"
@@ -234,7 +234,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(6, protection.Fault)
+					p := protection.NewPacket(6, protection.FaultSeverity)
 					p.Type = protection.DoubleType
 					p.Kind = protection.TimeAccumulationKind
 					p.Name = "time accumulation"
@@ -256,7 +256,7 @@ func TestDecoder(t *testing.T) {
 					return p
 				}(),
 				func() abstraction.Packet {
-					p := protection.NewPacket(5, protection.Warning)
+					p := protection.NewPacket(5, protection.WarningSeverity)
 					p.Type = 0
 					p.Kind = protection.ErrorHandlerKind
 					p.Name = "error handler"
@@ -668,8 +668,8 @@ func getDecoder(endianness binary.ByteOrder) *presentation.Decoder {
 	decoder.SetPacketDecoder(4, ordersDecoder)
 
 	protectionDecoder := protection.NewDecoder(endianness)
-	protectionDecoder.SetSeverity(5, protection.Warning)
-	protectionDecoder.SetSeverity(6, protection.Fault)
+	protectionDecoder.SetSeverity(5, protection.WarningSeverity)
+	protectionDecoder.SetSeverity(6, protection.FaultSeverity)
 	decoder.SetPacketDecoder(5, protectionDecoder)
 	decoder.SetPacketDecoder(6, protectionDecoder)
 

@@ -1,12 +1,14 @@
-@use "src/styles/colors";
-@use "src/styles/fonts";
+@use 'src/styles/colors';
+@use 'src/styles/fonts';
 
-.pageWrapper {
+.page {
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: .6rem;
-    padding: .8rem;
+    flex-flow: column;
+    gap: 0.6rem;
+
+    width: 100%;
+
+    padding: 0.8rem;
 }
 
 .header {
@@ -14,24 +16,26 @@
     flex-direction: row;
     align-items: center;
 
+    flex-grow: 0;
+    flex-shrink: 0;
+
     > h1 {
         font-size: map-get($map: fonts.$font-sizes, $key: default);
     }
-}
 
-.header::after {
-    content: " ";
-    width: 100%;
-    height: 3px;
-    margin-left: 1.3rem;
-    background-color: colors.getColor("primary", 90);
-    border-radius: 1rem;
+    &::after {
+        content: '';
+
+        width: 100%;
+        height: 3px;
+        border-radius: 1rem;
+
+        margin-left: 1.3rem;
+
+        background-color: colors.getColor('primary', 90);
+    }
 }
 
 .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .6rem;
-    height: 100%;
+    width: 100%;
 }

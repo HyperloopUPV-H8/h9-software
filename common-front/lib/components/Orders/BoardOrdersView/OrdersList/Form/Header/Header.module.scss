@@ -2,22 +2,20 @@ $main: var(--tertiary-60);
 $light: var(--tertiary-90);
 
 .headerWrapper {
-    flex: 0 0 0;
-    padding: 0.5rem;
+    padding: 0.35rem;
     display: grid;
     grid-template:
-        "caret name target button" auto
-        / auto 1fr auto 5rem;
+        'caret name target button' auto
+        / auto 1fr auto 3rem;
     align-items: center;
-    gap: 0.5rem;
     background-color: $light;
     cursor: pointer;
 }
 
 .caret {
     grid-area: caret;
-    width: 100%;
-    height: 100%;
+    width: 70%;
+    height: 70%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,7 +36,7 @@ $light: var(--tertiary-90);
 .name {
     grid-area: name;
     color: $main;
-    font-weight: 500;
+    font-size: 0.8rem;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -46,7 +44,7 @@ $light: var(--tertiary-90);
 .target {
     grid-area: target;
     color: red;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     margin: 0 0.5rem;
     opacity: 0;
     cursor: pointer;

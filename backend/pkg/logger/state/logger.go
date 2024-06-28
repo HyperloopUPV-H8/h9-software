@@ -1,7 +1,6 @@
 package state
 
 import (
-	"encoding/csv"
 	"fmt"
 	"os"
 	"path"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger"
+	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger/file"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/transport/packet/state"
 )
 
@@ -67,40 +67,19 @@ func (sublogger *Logger) PushRecord(record abstraction.LoggerRecord) error {
 		}
 	}
 
-	filename := path.Join(
-		"logger", "state",
-		logger.Timestamp.Format(logger.TimestampFormat),
-		fmt.Sprintf("%s.csv", stateRecord.Timestamp.Format(logger.TimestampFormat)),
-	)
-	err := os.MkdirAll(path.Dir(filename), os.ModePerm)
+	saveFile, err := sublogger.createFile(stateRecord.Timestamp)
 	if err != nil {
-		return logger.ErrCreatingAllDir{
-			Name:      Name,
-			Timestamp: time.Now(),
-			Path:      filename,
-		}
+		return err
 	}
-
-	file, err := os.Create(filename)
-	if err != nil {
-		return logger.ErrCreatingFile{
-			Name:      Name,
-			Timestamp: time.Now(),
-			Inner:     err,
-		}
-	}
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-	defer func(file *os.File) {
-		_ = file.Close()
-	}(file)
+	defer saveFile.Flush()
+	defer saveFile.Close()
 
 	for _, item := range stateRecord.Packet.State() {
 		values := make([]string, 0, len(item))
 		for _, value := range item {
 			values = append(values, fmt.Sprint(value))
 		}
-		err = writer.Write(values)
+		err = saveFile.Write(values)
 		if err != nil {
 			return logger.ErrWritingFile{
 				Name:      Name,
@@ -108,10 +87,29 @@ func (sublogger *Logger) PushRecord(record abstraction.LoggerRecord) error {
 				Inner:     err,
 			}
 		}
-		writer.Flush()
 	}
 
 	return nil
+}
+
+func (sublogger *Logger) createFile(timestamp time.Time) (*file.CSV, error) {
+	filename := path.Join(
+		"logger", "state",
+		logger.Timestamp.Format(logger.TimestampFormat),
+		fmt.Sprintf("%s.csv", timestamp.Format(logger.TimestampFormat)),
+	)
+
+	err := os.MkdirAll(path.Dir(filename), os.ModePerm)
+	if err != nil {
+		return nil, logger.ErrCreatingAllDir{
+			Name:      Name,
+			Timestamp: time.Now(),
+			Path:      filename,
+		}
+	}
+
+	fileRaw, err := os.Create(filename)
+	return file.NewCSV(fileRaw), err
 }
 
 func (sublogger *Logger) PullRecord(abstraction.LoggerRequest) (abstraction.LoggerRecord, error) {

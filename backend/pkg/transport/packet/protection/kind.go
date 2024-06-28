@@ -189,3 +189,26 @@ func (TimeAccumulation[T]) Name() string {
 func (t TimeAccumulation[T]) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(`{"value":%v,"bound":%v,"timelimit":%v}`, t.Value, t.Threshold, t.Time)), nil
 }
+
+type Warning struct {
+	Message string
+}
+
+func decodeWarning(reader io.Reader, endianness binary.ByteOrder) (Data, error) {
+	packet := new(Warning)
+	var err error
+	packet.Message, err = readCString(reader)
+	return packet, err
+}
+
+func (Warning) Kind() Kind {
+	return WarningKind
+}
+
+func (Warning) Name() string {
+	return "WARNING"
+}
+
+func (e Warning) MarshalJSON() ([]byte, error) {
+	return []byte(fmt.Sprintf(`"%s"`, e.Message)), nil
+}

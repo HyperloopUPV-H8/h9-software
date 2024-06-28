@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"path"
@@ -59,6 +61,8 @@ var traceLevel = flag.String("trace", "info", "set the trace level (\"fatal\", \
 var traceFile = flag.String("log", "trace.json", "set the trace log file")
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 var enableSNTP = flag.Bool("sntp", false, "enables a simple SNTP server on port 123")
+var networkDevice = flag.Int("dev", -1, "index of the network device to use, overrides device prompt")
+var blockprofile = flag.Int("blockprofile", 0, "number of block profiles to include")
 
 func main() {
 	flag.Parse()
@@ -79,6 +83,7 @@ func main() {
 		pprof.StartCPUProfile(f)
 		defer pprof.StopCPUProfile()
 	}
+	runtime.SetBlockProfileRate(*blockprofile)
 	config := getConfig("./config.toml")
 
 	file, err := excel.Download(excel.DownloadConfig(config.Excel.Download))
@@ -102,10 +107,19 @@ func main() {
 		trace.Fatal().Err(err).Msg("creating podData")
 	}
 
-	dev, err := selectDev()
-	if err != nil {
-		trace.Fatal().Err(err).Msg("Error selecting device")
-		panic(err)
+	var dev pcap.Interface
+	if *networkDevice != -1 {
+		devs, err := pcap.FindAllDevs()
+		if err != nil {
+			trace.Fatal().Err(err).Msg("Getting devices")
+		}
+
+		dev = devs[*networkDevice]
+	} else {
+		dev, err = selectDev()
+		if err != nil {
+			trace.Fatal().Err(err).Msg("Error selecting device")
+		}
 	}
 
 	vehicleOrders, err := vehicle_models.NewVehicleOrders(podData.Boards, config.Excel.Parse.Global.BLCUAddressKey)
@@ -275,6 +289,8 @@ func main() {
 		httpServer := h.NewServer(server.Addr, mux)
 		go httpServer.ListenAndServe()
 	}
+
+	go http.ListenAndServe("127.0.0.1:4040", nil)
 
 	// <--- SNTP --->
 	if *enableSNTP {
@@ -480,13 +496,13 @@ func getTransportDecEnc(info info.Info, podData pod_data.PodData) (*presentation
 	decoder.SetPacketDecoder(abstraction.PacketId(info.MessageIds.RemoveStateOrder), stateOrdersDecoder)
 
 	protectionDecoder := protection.NewDecoder(binary.LittleEndian)
-	protectionDecoder.SetSeverity(1000, protection.Fault).SetSeverity(2000, protection.Warning).SetSeverity(3000, protection.Ok)
-	protectionDecoder.SetSeverity(1111, protection.Fault).SetSeverity(2111, protection.Warning).SetSeverity(3111, protection.Ok)
-	protectionDecoder.SetSeverity(1222, protection.Fault).SetSeverity(2222, protection.Warning).SetSeverity(3222, protection.Ok)
-	protectionDecoder.SetSeverity(1333, protection.Fault)
-	protectionDecoder.SetSeverity(1444, protection.Fault)
-	protectionDecoder.SetSeverity(1555, protection.Fault)
-	protectionDecoder.SetSeverity(1666, protection.Fault).SetSeverity(2666, protection.Warning).SetSeverity(3666, protection.Ok)
+	protectionDecoder.SetSeverity(1000, protection.FaultSeverity).SetSeverity(2000, protection.WarningSeverity).SetSeverity(3000, protection.OkSeverity)
+	protectionDecoder.SetSeverity(1111, protection.FaultSeverity).SetSeverity(2111, protection.WarningSeverity).SetSeverity(3111, protection.OkSeverity)
+	protectionDecoder.SetSeverity(1222, protection.FaultSeverity).SetSeverity(2222, protection.WarningSeverity).SetSeverity(3222, protection.OkSeverity)
+	protectionDecoder.SetSeverity(1333, protection.FaultSeverity)
+	protectionDecoder.SetSeverity(1444, protection.FaultSeverity)
+	protectionDecoder.SetSeverity(1555, protection.FaultSeverity).SetSeverity(2555, protection.WarningSeverity)
+	protectionDecoder.SetSeverity(1666, protection.FaultSeverity).SetSeverity(2666, protection.WarningSeverity).SetSeverity(3666, protection.OkSeverity)
 	decoder.SetPacketDecoder(1000, protectionDecoder)
 	decoder.SetPacketDecoder(1111, protectionDecoder)
 	decoder.SetPacketDecoder(1222, protectionDecoder)
@@ -497,6 +513,7 @@ func getTransportDecEnc(info info.Info, podData pod_data.PodData) (*presentation
 	decoder.SetPacketDecoder(2000, protectionDecoder)
 	decoder.SetPacketDecoder(2111, protectionDecoder)
 	decoder.SetPacketDecoder(2222, protectionDecoder)
+	decoder.SetPacketDecoder(2555, protectionDecoder)
 	decoder.SetPacketDecoder(2666, protectionDecoder)
 	decoder.SetPacketDecoder(3000, protectionDecoder)
 	decoder.SetPacketDecoder(3111, protectionDecoder)

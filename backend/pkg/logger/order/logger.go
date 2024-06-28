@@ -1,17 +1,15 @@
 package order
 
 import (
-	"encoding/csv"
 	"fmt"
-	"io"
 	"os"
 	"path"
-	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/abstraction"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger"
+	"github.com/HyperloopUPV-H8/h9-backend/pkg/logger/file"
 	"github.com/HyperloopUPV-H8/h9-backend/pkg/transport/packet/data"
 )
 
@@ -21,9 +19,8 @@ const (
 
 type Logger struct {
 	// An atomic boolean is used in order to use CompareAndSwap in the Start and Stop methods
-	running  *atomic.Bool
-	fileLock *sync.RWMutex
-	writer   io.WriteCloser
+	running *atomic.Bool
+	writer  *file.CSV
 }
 
 type Record struct {
@@ -39,9 +36,8 @@ func (*Record) Name() abstraction.LoggerName {
 
 func NewLogger() *Logger {
 	return &Logger{
-		running:  &atomic.Bool{},
-		fileLock: &sync.RWMutex{},
-		writer:   nil,
+		running: &atomic.Bool{},
+		writer:  nil,
 	}
 }
 
@@ -51,32 +47,33 @@ func (sublogger *Logger) Start() error {
 		return nil
 	}
 
+	fileRaw, err := sublogger.createFile()
+	if err != nil {
+		return err
+	}
+	sublogger.writer = file.NewCSV(fileRaw)
+
+	fmt.Println("Logger started")
+	return nil
+}
+
+func (sublogger *Logger) createFile() (*os.File, error) {
 	filename := path.Join(
 		"logger", "order",
 		logger.Timestamp.Format(logger.TimestampFormat),
 		"order.csv",
 	)
+
 	err := os.MkdirAll(path.Dir(filename), os.ModePerm)
 	if err != nil {
-		return logger.ErrCreatingAllDir{
+		return nil, logger.ErrCreatingAllDir{
 			Name:      Name,
 			Timestamp: time.Now(),
 			Path:      filename,
 		}
 	}
 
-	file, err := os.Create(filename)
-	if err != nil {
-		return logger.ErrCreatingFile{
-			Name:      Name,
-			Timestamp: time.Now(),
-			Inner:     err,
-		}
-	}
-	sublogger.writer = file
-
-	fmt.Println("Logger started")
-	return nil
+	return os.Create(filename)
 }
 
 func (sublogger *Logger) PushRecord(record abstraction.LoggerRecord) error {
@@ -97,22 +94,15 @@ func (sublogger *Logger) PushRecord(record abstraction.LoggerRecord) error {
 		}
 	}
 
-	sublogger.fileLock.Lock()
-	defer sublogger.fileLock.Unlock()
-
-	csvWriter := csv.NewWriter(sublogger.writer)
-	defer csvWriter.Flush()
-
-	timestamp := orderRecord.Packet.Timestamp().UnixMilli()
-	val := fmt.Sprint(orderRecord.Packet.GetValues())
-	err := csvWriter.Write([]string{
-		fmt.Sprint(timestamp),
+	err := sublogger.writer.Write([]string{
+		fmt.Sprint(orderRecord.Packet.Timestamp().UnixMilli()),
 		orderRecord.From,
 		orderRecord.To,
 		fmt.Sprint(orderRecord.Packet.Id()),
-		val,
+		fmt.Sprint(orderRecord.Packet.GetValues()),
 		orderRecord.Timestamp.Format(time.RFC3339),
 	})
+	sublogger.writer.Flush()
 	if err != nil {
 		return logger.ErrWritingFile{
 			Name:      Name,
