@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-flow: row;
+    max-height: 103px;
+    max-width: 120px;
+    overflow: hidden;
+}
+
+.rotated {
+    transform: rotate(180deg);
+}
+
+.wall {
+    > img {
+        height: 100%;
+    }
+}
+
+.unit {
+    position: relative;
+    width: 47px;
+
+    > img {
+        position: absolute;
+
+        height: 100%;
+    }
+}

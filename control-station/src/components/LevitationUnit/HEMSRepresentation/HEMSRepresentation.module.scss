@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    flex-flow: column;
+    max-height: 103px;
+    max-width: 120px;
+    overflow: hidden;
+}
+
+.wall {
+    > img {
+        width: 100%;
+    }
+}
+
+.unit {
+    position: relative;
+    height: 57px;
+
+    > img {
+        position: absolute;
+
+        width: 100%;
+    }
+}

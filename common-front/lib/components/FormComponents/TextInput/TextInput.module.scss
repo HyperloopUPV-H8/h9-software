@@ -1,18 +1,16 @@
+@use '../../../styles/styles.scss';
+
 .textInput {
-    all: unset;
     flex: 1 1 0;
     min-width: 5rem;
-    padding: 0.4rem 0.5rem;
-    border-radius: 0.4rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: styles.$normal-border-radius;
     font: inherit;
     transition: border-color 0.1s linear;
-    border-width: 1px;
-    border-style: solid;
-    font-size: 0.9rem;
 }
 
 .valid {
-    border-color: hsla(112, 100%, 72%, 1);
+    border-color: #84e067;
 }
 
 .invalid {

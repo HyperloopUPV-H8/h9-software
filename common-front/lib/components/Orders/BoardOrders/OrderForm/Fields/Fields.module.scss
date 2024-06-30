@@ -1,0 +1,13 @@
+@use '../../../../../styles/styles.scss';
+
+.fieldsWrapper {
+    width: 100%;
+    padding: 1rem;
+    border-top: 1px solid styles.$orange;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    overflow-x: auto;
+}

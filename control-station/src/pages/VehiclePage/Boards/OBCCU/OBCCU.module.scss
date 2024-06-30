@@ -1,27 +1,67 @@
-@use "src/styles/fonts";
+@use 'src/styles/fonts';
 
-.obccu {
-    min-width: fit-content;
-    width: 100%;
-}
-
-.batteryRow {
+.hv_battery {
     display: flex;
-    justify-content: center;
-    gap: 1rem;
+    flex-flow: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    .column {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
 }
 
-.centerPiece {
-    position: relative;
+.middle_piece {
     display: flex;
-    align-items: center;
-    padding: .4rem;
-    gap: .5rem;
-    background-color: hsla(207, 89%, 96%, 1);
-}
+    flex-flow: column;
+    justify-content: space-around;
 
-.connectorIndicator {
-    position: absolute;
-    color: #3C7A8D;
+    min-width: 58px;
+    border-radius: 10px;
+
+    padding: 0 0.35rem;
+
+    color: #3c7a8d;
     font-size: map-get($map: fonts.$font-sizes, $key: x-small);
+
+    background-color: #edf6fe;
+
+    position: relative;
+
+    .xt90:nth-child(even) {
+        transform: rotate(180deg);
+    }
+
+    .connector_row {
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+    }
+
+    .cell_legend {
+        position: absolute;
+
+        &.one {
+            top: 0rem;
+            left: 0.5rem;
+        }
+
+        &.ten {
+            top: 0rem;
+            right: 0.5rem;
+        }
+
+        &.five {
+            bottom: 0rem;
+            left: 0.5rem;
+        }
+
+        &.six {
+            bottom: 0rem;
+            right: 0.5rem;
+        }
+    }
 }

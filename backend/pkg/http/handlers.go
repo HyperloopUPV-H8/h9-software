@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"sync"
 	"time"
 )
 
@@ -12,6 +13,7 @@ type handleData struct {
 	name    string
 	modTime time.Time
 	data    io.ReadSeeker
+	dataMx  *sync.Mutex
 }
 
 func HandleData(name string, data io.ReadSeeker) *handleData {
@@ -19,6 +21,7 @@ func HandleData(name string, data io.ReadSeeker) *handleData {
 		name:    name,
 		modTime: time.Now(),
 		data:    data,
+		dataMx:  new(sync.Mutex),
 	}
 }
 
@@ -39,6 +42,8 @@ func (handle *handleData) ServeHTTP(writer http.ResponseWriter, request *http.Re
 	writer.Header().Set("Cache-Control", "no-cache")
 	writer.Header().Set("Pragma", "no-cache")
 	writer.Header().Set("Access-Control-Allow-Origin", "*")
+	handle.dataMx.Lock()
+	defer handle.dataMx.Unlock()
 	http.ServeContent(writer, request, handle.name, handle.modTime, handle.data)
 }
 

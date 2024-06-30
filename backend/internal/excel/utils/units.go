@@ -34,7 +34,7 @@ func ParseUnits(literal string, globalUnits map[string]Operations) (Units, error
 		ops, ok := globalUnits[parts[0]]
 
 		if !ok {
-			return Units{}, fmt.Errorf("units \"%s\" not found in global", parts[0])
+			return Units{Name: parts[0], Operations: make(Operations, 0)}, fmt.Errorf("units \"%s\" not found in global", parts[0])
 		}
 
 		return Units{
@@ -44,13 +44,13 @@ func ParseUnits(literal string, globalUnits map[string]Operations) (Units, error
 	}
 
 	if len(parts) != 2 {
-		return Units{}, fmt.Errorf("units %v can only have 2 parts", parts)
+		return Units{Name: parts[0], Operations: make(Operations, 0)}, fmt.Errorf("units %v can only have 2 parts", parts)
 	}
 
 	operations, err := NewOperations(parts[1])
 
 	if err != nil {
-		return Units{}, err
+		return Units{Name: parts[0], Operations: make(Operations, 0)}, err
 	}
 
 	return Units{

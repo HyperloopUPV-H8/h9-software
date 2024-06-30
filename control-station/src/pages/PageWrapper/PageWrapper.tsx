@@ -1,4 +1,4 @@
-import styles from "pages/PageWrapper/PageWrapper.module.scss";
+import styles from 'pages/PageWrapper/PageWrapper.module.scss';
 
 type Props = {
     title: string;
@@ -7,7 +7,7 @@ type Props = {
 
 export const PageWrapper = ({ title, children }: Props) => {
     return (
-        <main className={styles.pageWrapper}>
+        <main className={styles.page}>
             <header className={styles.header}>
                 <h1>{title}</h1>
             </header>

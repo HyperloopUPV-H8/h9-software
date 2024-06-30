@@ -1,0 +1,23 @@
+@use '../../../../../../styles/styles.scss';
+
+.fieldWrapper {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    gap: 0.5rem;
+}
+
+.input {
+    display: flex;
+    flex-flow: row;
+    gap: 0.5rem;
+}
+
+.name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.disabled {
+    color: rgb(176, 176, 176);
+}

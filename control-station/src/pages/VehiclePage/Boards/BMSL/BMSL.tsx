@@ -1,175 +1,156 @@
-import styles from "./BMSL.module.scss";
-import { Window } from "components/Window/Window";
-import { BmslMeasurements, useMeasurementsStore } from "common";
-import { GaugeTag } from "components/GaugeTag/GaugeTag";
-import { BarIndicator } from "components/BarIndicator/BarIndicator";
-import { IndicatorStack } from "components/IndicatorStack/IndicatorStack";
-import thermometerIcon from "assets/svg/thermometer-filled.svg";
-import batteryIcon from "assets/svg/battery-filled.svg";
-import thunderIcon from "assets/svg/thunder-filled.svg";
+import { Window } from 'components/Window/Window';
+import { GaugeTag } from 'components/GaugeTag/GaugeTag';
+import { BmslMeasurements, useMeasurementsStore } from 'common';
+import { IndicatorStack } from 'components/IndicatorStack/IndicatorStack';
+import { BarIndicator } from 'components/BarIndicator/BarIndicator';
+import batteryIcon from 'assets/svg/battery-filled.svg';
+import thermometerIcon from 'assets/svg/thermometer-filled.svg';
 
 export const BMSL = () => {
-    const getNumericMeasurementInfo = useMeasurementsStore((state) => state.getNumericMeasurementInfo);
-    const totalVoltageLow = getNumericMeasurementInfo(BmslMeasurements.totalVoltageLow);
-    const avCurrent = getNumericMeasurementInfo(BmslMeasurements.avCurrent);
-    const lowSOC1 = getNumericMeasurementInfo(BmslMeasurements.lowSOC1);
-    const lowBatteryTemperature1 = getNumericMeasurementInfo(BmslMeasurements.lowBatteryTemperature1);
-    const lowBatteryTemperature2 = getNumericMeasurementInfo(BmslMeasurements.lowBatteryTemperature2);
-    const inputChargingCurrent = getNumericMeasurementInfo(BmslMeasurements.inputChargingCurrent);
-    const inputChargingVoltage = getNumericMeasurementInfo(BmslMeasurements.inputChargingVoltage);
-    const outputChargingCurrent = getNumericMeasurementInfo(BmslMeasurements.outputChargingCurrent);
-    const outputChargingVoltage = getNumericMeasurementInfo(BmslMeasurements.outputChargingVoltage);
-    const lowCell1 = getNumericMeasurementInfo(BmslMeasurements.lowCell1);
-    const lowCell2 = getNumericMeasurementInfo(BmslMeasurements.lowCell2);
-    const lowCell3 = getNumericMeasurementInfo(BmslMeasurements.lowCell3);
-    const lowCell4 = getNumericMeasurementInfo(BmslMeasurements.lowCell4);
-    const lowCell5 = getNumericMeasurementInfo(BmslMeasurements.lowCell5);
-    const lowCell6 = getNumericMeasurementInfo(BmslMeasurements.lowCell6);
+    const getNumericMeasurementInfo = useMeasurementsStore(
+        (state) => state.getNumericMeasurementInfo
+    );
+
+    const cell1 = getNumericMeasurementInfo(BmslMeasurements.cell1);
+    const cell2 = getNumericMeasurementInfo(BmslMeasurements.cell2);
+    const cell3 = getNumericMeasurementInfo(BmslMeasurements.cell3);
+    const cell4 = getNumericMeasurementInfo(BmslMeasurements.cell4);
+    const cell5 = getNumericMeasurementInfo(BmslMeasurements.cell5);
+    const cell6 = getNumericMeasurementInfo(BmslMeasurements.cell6);
+
+    const temp1 = getNumericMeasurementInfo(BmslMeasurements.temp1);
+    const temp2 = getNumericMeasurementInfo(BmslMeasurements.temp2);
+
+    const totalVoltage = getNumericMeasurementInfo(
+        BmslMeasurements.totalVoltage
+    );
+    const dischargeCurrent = getNumericMeasurementInfo(
+        BmslMeasurements.dischargeCurrent
+    );
 
     return (
         <Window title="BMSL">
-            <div className={styles.bmsl}>
-                <div className={styles.row}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexFlow: 'column',
+                    gap: '1rem',
+                    height: '100%',
+                }}
+            >
+                <div
+                    style={{
+                        flex: '1',
+                        display: 'flex',
+                        flexFlow: 'row',
+                        gap: '.5rem',
+                    }}
+                >
                     <GaugeTag
-                        name={totalVoltageLow.name}
-                        units={totalVoltageLow.units}
-                        getUpdate={totalVoltageLow.getUpdate}
+                        id="bmsl_general_voltage"
+                        name={'Voltage'}
+                        units={'Volts'}
+                        getUpdate={totalVoltage.getUpdate}
                         strokeWidth={120}
-                        min={totalVoltageLow.range[0] || 0}
-                        max={totalVoltageLow.range[1] || 0}
+                        min={totalVoltage.warningRange[0] ?? 225}
+                        max={totalVoltage.warningRange[1] ?? 252}
                     />
                     <GaugeTag
-                        name={avCurrent.name}
-                        units={avCurrent.units}
-                        getUpdate={avCurrent.getUpdate}
+                        id="bmsl_general_current"
+                        name={'Current'}
+                        units={'Amps'}
+                        getUpdate={dischargeCurrent.getUpdate}
                         strokeWidth={120}
-                        min={avCurrent.range[1] || 0}
-                        max={avCurrent.range[1] || 0}
+                        min={dischargeCurrent.warningRange[0] ?? 0}
+                        max={dischargeCurrent.warningRange[1] ?? 100}
                     />
                 </div>
-                <div className={styles.row}>
-                    <IndicatorStack>
-                        <BarIndicator
-                            title="SoC"
-                            icon={batteryIcon}
-                            getValue={lowSOC1.getUpdate}
-                            safeRangeMin={lowSOC1.range[0]!!}
-                            safeRangeMax={lowSOC1.range[1]!!}
-                            units="%"
-                        />
-                    </IndicatorStack>
 
-                    <IndicatorStack>
-                        <BarIndicator
-                            title="Temperature 1"
-                            icon={thermometerIcon}
-                            getValue={lowBatteryTemperature1.getUpdate}
-                            safeRangeMin={lowBatteryTemperature1.range[0]!!}
-                            safeRangeMax={lowBatteryTemperature1.range[1]!!}
-                            units="ºC"
-                        />
-                        <BarIndicator
-                            title="Temperature 2"
-                            icon={thermometerIcon}
-                            getValue={lowBatteryTemperature2.getUpdate}
-                            safeRangeMin={lowBatteryTemperature2.range[0]!!}
-                            safeRangeMax={lowBatteryTemperature2.range[1]!!}
-                            units="ºC"
-                        />
-                    </IndicatorStack>
-                </div>
-                <div className={styles.row}>
-                    <div className={styles.column}>
-                        <IndicatorStack>
-                            <BarIndicator
-                                title="Input Current"
-                                icon={thunderIcon}
-                                getValue={inputChargingCurrent.getUpdate}
-                                safeRangeMin={inputChargingCurrent.range[0]!!}
-                                safeRangeMax={inputChargingCurrent.range[1]!!}
-                                units="A"
-                            />
-                            <BarIndicator
-                                title="Input Voltage"
-                                icon={thunderIcon}
-                                getValue={inputChargingVoltage.getUpdate}
-                                safeRangeMin={inputChargingVoltage.range[0]!!}
-                                safeRangeMax={inputChargingVoltage.range[1]!!}
-                                units="V"
-                            />
-                        </IndicatorStack>
-                        <IndicatorStack>
-                            <BarIndicator
-                                title="Output Current"
-                                icon={thunderIcon}
-                                getValue={outputChargingCurrent.getUpdate}
-                                safeRangeMin={outputChargingCurrent.range[0]!!}
-                                safeRangeMax={outputChargingCurrent.range[1]!!}
-                                units="A"
-                            />
-                            <BarIndicator
-                                title="Output Voltage"
-                                icon={thunderIcon}
-                                getValue={outputChargingVoltage.getUpdate}
-                                safeRangeMin={outputChargingVoltage.range[0]!!}
-                                safeRangeMax={outputChargingVoltage.range[1]!!}
-                                units="V"
-                            />
-                        </IndicatorStack>
-                    </div>
-                    <div className={styles.column}>
-                        <IndicatorStack>
-                            <BarIndicator
-                                title="Cell 1"
-                                icon={batteryIcon}
-                                getValue={lowCell1.getUpdate}
-                                safeRangeMin={lowCell1.range[0]!!}
-                                safeRangeMax={lowCell1.range[1]!!}
-                                units="V"
-                            />
-                            <BarIndicator
-                                title="Cell 2"
-                                icon={batteryIcon}
-                                getValue={lowCell2.getUpdate}
-                                safeRangeMin={lowCell2.range[0]!!}
-                                safeRangeMax={lowCell2.range[1]!!}
-                                units="V"
-                            />
-                            <BarIndicator
-                                title="Cell 3"
-                                icon={batteryIcon}
-                                getValue={lowCell3.getUpdate}
-                                safeRangeMin={lowCell3.range[0]!!}
-                                safeRangeMax={lowCell3.range[1]!!}
-                                units="V"
-                            />
-                            <BarIndicator
-                                title="Cell 4"
-                                icon={batteryIcon}
-                                getValue={lowCell4.getUpdate}
-                                safeRangeMin={lowCell4.range[0]!!}
-                                safeRangeMax={lowCell4.range[1]!!}
-                                units="V"
-                            />
-                            <BarIndicator
-                                title="Cell 5"
-                                icon={batteryIcon}
-                                getValue={lowCell5.getUpdate}
-                                safeRangeMin={lowCell5.range[0]!!}
-                                safeRangeMax={lowCell5.range[1]!!}
-                                units="V"
-                            />
-                            <BarIndicator
-                                title="Cell 6"
-                                icon={batteryIcon}
-                                getValue={lowCell6.getUpdate}
-                                safeRangeMin={lowCell6.range[0]!!}
-                                safeRangeMax={lowCell6.range[1]!!}
-                                units="V"
-                            />
-                        </IndicatorStack>
-                    </div>
-                </div>
+                <IndicatorStack>
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 1"
+                        getValue={cell1.getUpdate}
+                        safeRangeMin={cell1.range[0]!!}
+                        safeRangeMax={cell1.range[1]!!}
+                        warningRangeMin={cell1.warningRange[0]!!}
+                        warningRangeMax={cell1.warningRange[1]!!}
+                        units={cell1.units}
+                    />
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 2"
+                        getValue={cell2.getUpdate}
+                        safeRangeMin={cell2.range[0]!!}
+                        safeRangeMax={cell2.range[1]!!}
+                        warningRangeMin={cell2.warningRange[0]!!}
+                        warningRangeMax={cell2.warningRange[1]!!}
+                        units={cell2.units}
+                    />
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 3"
+                        getValue={cell3.getUpdate}
+                        safeRangeMin={cell3.range[0]!!}
+                        safeRangeMax={cell3.range[1]!!}
+                        warningRangeMin={cell3.warningRange[0]!!}
+                        warningRangeMax={cell3.warningRange[1]!!}
+                        units={cell3.units}
+                    />
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 4"
+                        getValue={cell4.getUpdate}
+                        safeRangeMin={cell4.range[0]!!}
+                        safeRangeMax={cell4.range[1]!!}
+                        warningRangeMin={cell4.warningRange[0]!!}
+                        warningRangeMax={cell4.warningRange[1]!!}
+                        units={cell4.units}
+                    />
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 5"
+                        getValue={cell5.getUpdate}
+                        safeRangeMin={cell5.range[0]!!}
+                        safeRangeMax={cell5.range[1]!!}
+                        warningRangeMin={cell5.warningRange[0]!!}
+                        warningRangeMax={cell5.warningRange[1]!!}
+                        units={cell5.units}
+                    />
+                    <BarIndicator
+                        icon={batteryIcon}
+                        title="Cell 6"
+                        getValue={cell6.getUpdate}
+                        safeRangeMin={cell6.range[0]!!}
+                        safeRangeMax={cell6.range[1]!!}
+                        warningRangeMin={cell6.warningRange[0]!!}
+                        warningRangeMax={cell6.warningRange[1]!!}
+                        units={cell6.units}
+                    />
+                </IndicatorStack>
+
+                <IndicatorStack>
+                    <BarIndicator
+                        icon={thermometerIcon}
+                        title="Temp 1"
+                        getValue={temp1.getUpdate}
+                        safeRangeMin={temp1.range[0]!!}
+                        safeRangeMax={temp1.range[1]!!}
+                        warningRangeMin={temp1.warningRange[0]!!}
+                        warningRangeMax={temp1.warningRange[1]!!}
+                        units={temp1.units}
+                    />
+                    <BarIndicator
+                        icon={thermometerIcon}
+                        title="Temp 2"
+                        getValue={temp2.getUpdate}
+                        safeRangeMin={temp2.range[0]!!}
+                        safeRangeMax={temp2.range[1]!!}
+                        warningRangeMin={temp2.warningRange[0]!!}
+                        warningRangeMax={temp2.warningRange[1]!!}
+                        units={temp2.units}
+                    />
+                </IndicatorStack>
             </div>
         </Window>
     );

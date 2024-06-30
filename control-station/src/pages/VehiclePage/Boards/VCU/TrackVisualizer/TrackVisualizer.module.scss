@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.track_container {
+    display: flex;
+    justify-content: center;
+    max-width: 167px;
+
+    > img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.vehicle_container {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+
+    > img {
+        width: 100%;
+        height: 100%;
+        max-width: 69px;
+    }
+}

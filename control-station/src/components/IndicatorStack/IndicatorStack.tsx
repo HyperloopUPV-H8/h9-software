@@ -1,13 +1,10 @@
-import styles from "./IndicatorStack.module.scss"
+import styles from './IndicatorStack.module.scss';
 
 interface Props {
     children: React.ReactNode;
+    className?: string;
 }
 
-export const IndicatorStack = ({children}: Props) => {
-    return (
-        <div className={styles.container}>
-            {children}
-        </div>
-    )
-}
+export const IndicatorStack = ({ children, className }: Props) => {
+    return <div className={`${styles.container} ${className}`}>{children}</div>;
+};

@@ -1,9 +1,10 @@
-import styles from "components/GaugeTag/Gauge/BackgroundArc/BackgroundArc.module.scss";
-import { Arc } from "components/GaugeTag/Gauge/Arc/Arc";
-type Props = React.ComponentProps<typeof Arc>;
+import styles from 'components/GaugeTag/Gauge/BackgroundArc/BackgroundArc.module.scss';
+import { Arc } from 'components/GaugeTag/Gauge/Arc/Arc';
+type Props = React.ComponentProps<typeof Arc> & { id: string };
 
 export const BackgroundArc = ({
     percentage,
+    id,
     radius,
     strokeWidth,
     sweep,
@@ -12,7 +13,7 @@ export const BackgroundArc = ({
     return (
         <>
             <defs>
-                <mask id="myMask">
+                <mask id={id}>
                     <Arc
                         sweep={sweep}
                         radius={radius}
@@ -28,13 +29,13 @@ export const BackgroundArc = ({
                 y="0"
                 width="100%"
                 height="100%"
-                mask="url(#myMask)"
+                mask={`url(#${id})`}
             >
                 <div
                     className={className}
                     style={{
-                        width: "100%",
-                        height: "100%",
+                        width: '100%',
+                        height: '100%',
                     }}
                 />
             </foreignObject>

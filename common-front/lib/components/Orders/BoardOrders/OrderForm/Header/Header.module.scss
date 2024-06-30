@@ -1,0 +1,72 @@
+@use '../../../../../styles/styles.scss';
+$header-color: #ffe4cc;
+
+.headerWrapper {
+    flex: 0 0 0;
+    padding: 0.5rem;
+    display: grid;
+    grid-template:
+        'caret name target button' auto
+        / auto 1fr auto 5rem;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: $header-color;
+    cursor: pointer;
+}
+
+.caret {
+    grid-area: caret;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.caret > * {
+    color: styles.$orange;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.name {
+    grid-area: name;
+    color: styles.$orange;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.target {
+    grid-area: target;
+    color: red;
+    font-size: 0.8rem;
+    margin: 0 0.5rem;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.07s linear;
+}
+
+.targetVisible {
+    opacity: 1;
+}
+
+.headerWrapper:hover {
+    .target:not(.targetVisible) {
+        opacity: 0.5;
+    }
+}
+
+.sendBtn {
+    grid-area: button;
+    height: 100%;
+    button {
+        height: 100%;
+    }
+}

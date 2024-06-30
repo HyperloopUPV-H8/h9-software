@@ -1,0 +1,25 @@
+.data2_page {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 1rem;
+}
+
+.column {
+    display: flex;
+    flex-flow: column;
+    gap: 1rem;
+    height: fit-content;
+}
+
+.orders {
+    max-height: 85vh;
+    width: 18vw;
+    max-width: 18vw;
+}
+
+.messages {
+    height: 70vh;
+    max-height: 70vh;
+    width: 14vw;
+    max-width: 14vw;
+}

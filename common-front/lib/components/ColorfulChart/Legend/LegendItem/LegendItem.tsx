@@ -1,19 +1,22 @@
-import styles from "./LegendItem.module.scss";
+import { useState } from 'react';
+import { useGlobalTicker } from '../../../../services';
+import styles from './LegendItem.module.scss';
 
 type Props = {
     name: string;
-    value: number;
+    getValue: () => number;
     units: string;
     color: string;
 };
 
-export const LegendItem = ({ name, units, value, color }: Props) => {
+export const LegendItem = ({ name, units, getValue, color }: Props) => {
+    const [value, setValue] = useState(getValue());
+
+    useGlobalTicker(() => setValue(getValue()));
+
     return (
         <div className={styles.legendItem}>
-            <div
-                className={styles.name}
-                style={{ backgroundColor: color }}
-            >
+            <div className={styles.name} style={{ backgroundColor: color }}>
                 {name}
             </div>
             <div className={styles.value}>

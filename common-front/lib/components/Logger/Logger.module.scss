@@ -4,21 +4,22 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    width: 100%;
 }
 
 .state {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 1.1rem;
 }
 
 .buttons {
-    width: 10rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 1rem;
+    width: fit-content;
 
     > * {
         min-width: 0;

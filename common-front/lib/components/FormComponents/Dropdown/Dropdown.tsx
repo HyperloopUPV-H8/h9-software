@@ -1,11 +1,12 @@
-import { EnumInputData } from "../../..";
-import styles from "./Dropdown.module.scss";
+import styles from './Dropdown.module.scss';
 
-type Props = EnumInputData & {
-    onChange?: (v: string) => void;
+type Props = {
+    value?: string;
+    options: string[];
+    onChange: (newValue: string) => void;
 };
 
-export const Dropdown = ({ value, options, onChange = () => {} }: Props) => {
+export const Dropdown = ({ value, options, onChange }: Props) => {
     return (
         <select
             name=""
@@ -15,10 +16,7 @@ export const Dropdown = ({ value, options, onChange = () => {} }: Props) => {
         >
             {options.map((option, index) => {
                 return (
-                    <option
-                        key={index}
-                        value={option}
-                    >
+                    <option key={index} value={option}>
                         {option}
                     </option>
                 );

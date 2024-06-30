@@ -35,12 +35,7 @@ func getMeasurements(adeMeasurements []ade.Measurement, globalUnits map[string]u
 
 func getMeasurement(adeMeas ade.Measurement, globalUnits map[string]utils.Operations) (Measurement, error) {
 	if isNumeric(adeMeas.Type) {
-		m, err := getNumericMeasurement(adeMeas, globalUnits)
-
-		if err != nil {
-			return nil, err
-		}
-		return m, nil
+		return getNumericMeasurement(adeMeas, globalUnits)
 	} else if adeMeas.Type == "bool" {
 		return getBooleanMeasurement(adeMeas), nil
 	} else if strings.HasPrefix(adeMeas.Type, "enum") {

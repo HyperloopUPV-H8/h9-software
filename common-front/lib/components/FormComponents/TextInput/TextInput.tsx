@@ -1,18 +1,16 @@
-import styles from "./TextInput.module.scss";
+import styles from './TextInput.module.scss';
 
 type Props = { isValid: boolean } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export const TextInput = ({ isValid, ...props }: Props) => {
     return (
         <input
-            {...props}
             type="text"
             name=""
             className={`${styles.textInput} ${
                 isValid ? styles.valid : styles.invalid
-            } ${props.disabled ? styles.disabled : ""} ${
-                props.className ?? ""
-            }`}
+            } ${props.disabled ? styles.disabled : ''}`}
+            {...props}
         />
     );
 };

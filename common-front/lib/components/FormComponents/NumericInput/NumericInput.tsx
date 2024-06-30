@@ -1,5 +1,13 @@
-import { useEffect, useState } from "react";
 import { TextInput } from "../TextInput/TextInput";
+
+type Props = {
+    required: boolean;
+    defaultValue: number | string;
+    placeholder: string;
+    disabled: boolean;
+    isValid: boolean;
+    onChange: (value: string) => void;
+};
 
 function getUnion(arr: string[]): string {
     return arr.map((value) => `(?:${value})`).join("|");
@@ -15,39 +23,20 @@ const numericInputKeyRegex = (() => {
     return new RegExp(regexp);
 })();
 
-type Props = {
-    value: number | null;
-    required?: boolean;
-    defaultValue?: number | string;
-    placeholder?: string;
-    disabled?: boolean;
-    isValid?: boolean;
-    className?: string;
-    onChange?: (value: number | null) => void;
-};
-
 export const NumericInput = ({
-    value,
-    onChange = () => {},
-    required = true,
-    disabled = false,
-    isValid = true,
-    placeholder = "Enter number",
-    className,
+    onChange,
+    required,
+    disabled,
+    isValid,
+    placeholder,
+    defaultValue,
 }: Props) => {
-    const [number, setNumber] = useState<number | null>(value);
-
-    useEffect(() => {
-        onChange(number);
-    }, [number]);
-
     return (
         <TextInput
-            className={className}
-            defaultValue={value ?? ""}
-            isValid={isValid && number !== null}
+            isValid={isValid}
             disabled={disabled}
             placeholder={placeholder}
+            defaultValue={defaultValue}
             required={required}
             onKeyDown={(ev) => {
                 if (!numericInputKeyRegex.test(ev.key)) {
@@ -56,16 +45,8 @@ export const NumericInput = ({
                 }
             }}
             onChange={(ev) => {
-                if (ev.target.value == "") {
-                    setNumber(null);
-                } else if (isNumber(ev.target.value)) {
-                    setNumber(parseFloat(ev.target.value));
-                }
+                onChange(ev.target.value);
             }}
         />
     );
 };
-
-function isNumber(str: string): boolean {
-    return /^-?\d+(?:\.\d+)?$/.test(str);
-}

@@ -1,29 +1,27 @@
-@use "src/styles/colors";
-@use "src/styles/fonts";
+@use 'src/styles/colors';
+@use 'src/styles/fonts';
 
 .window {
     display: flex;
-    flex-direction: column;
+    flex-flow: column;
     border-radius: 0.8rem;
-    overflow: hidden;
     filter: var(--shadow);
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .header {
-    background-color: colors.getColor("tertiary", 90);
-    color: colors.getColor("tertiary", 60);
+    background-color: colors.getColor('tertiary', 90);
+    color: colors.getColor('tertiary', 60);
     font-weight: bold;
-    padding: .3rem .6rem;
+    padding: 0.3rem 0.6rem;
     font-size: map-get($map: fonts.$font-sizes, $key: x-small);
 }
 
 .content {
-    min-width: fit-content;
     display: flex;
-    flex: 1;
     justify-content: center;
-    padding: .6rem;
-    background-color: colors.getColor("primary", 99);
+    padding: 0.6rem;
+    background-color: colors.getColor('primary', 99);
     overflow: scroll;
+    height: 100%;
 }

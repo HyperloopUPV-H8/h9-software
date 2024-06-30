@@ -1,26 +1,25 @@
-import { BooleanInputData } from "../../..";
-import styles from "./CheckBox.module.scss";
-import { ChangeEvent, useState } from "react";
+import styles from './CheckBox.module.scss';
+import { ChangeEvent, useState } from 'react';
 
-type Props = BooleanInputData & {
-    isRequired?: boolean;
-    onChange?: (value: boolean) => void;
+type Props = {
+    isRequired: boolean;
+    onChange: (value: boolean) => void;
     disabled?: boolean;
+    initialValue?: boolean;
     color?: string;
 };
 
 export const CheckBox = ({
-    value,
-    onChange = () => {},
+    onChange,
     disabled = false,
-    isRequired = true,
-    color = "blue",
+    isRequired,
+    initialValue = false,
+    color,
 }: Props) => {
-    const [checked, setChecked] = useState(value);
+    const [checked, setChecked] = useState(initialValue);
 
     return (
         <input
-            className={styles.checkbox}
             type="checkbox"
             disabled={disabled}
             style={{ accentColor: color }}

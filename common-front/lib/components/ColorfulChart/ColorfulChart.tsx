@@ -1,26 +1,30 @@
-import styles from "./ColorfulChart.module.scss";
-import { Legend } from "./Legend/Legend";
-import { Title } from "./Title/Title";
-import { LinesChart } from "../LinesChart/LinesChart";
-import { LineDescription } from "../LinesChart/types";
-import { useMemo } from "react";
+import styles from './ColorfulChart.module.scss';
+import { Legend } from './Legend/Legend';
+import { Title } from './Title/Title';
+import { LinesChart } from '../LinesChart/LinesChart';
+import { LineDescription } from '../LinesChart/types';
+import { useMemo } from 'react';
 
-const palette = ["#EE8735", "#51C6EB", "#7BEE35", "#e469ca"];
+const palette = ['#EE8735', '#51C6EB', '#7BEE35', '#e469ca'];
 
 type Props = {
     className?: string;
-    title: string;
+    title?: string;
     items: LineDescription[];
     length: number;
     height?: string;
+    showLegend?: boolean;
+    showTitle?: boolean;
 };
 
 export const ColorfulChart = ({
-    className = "",
-    title,
+    className = '',
+    title = '',
     items,
     length,
-    height = "8rem",
+    height = '8rem',
+    showLegend = false,
+    showTitle = false,
 }: Props) => {
     const itemsWithPalette = useMemo(
         () =>
@@ -33,7 +37,7 @@ export const ColorfulChart = ({
 
     return (
         <div className={`${styles.colorfulChart} ${className}`}>
-            <Title title={title} />
+            {showTitle && <Title title={title} />}
             <div className={styles.body}>
                 <LinesChart
                     height={height}
@@ -42,7 +46,7 @@ export const ColorfulChart = ({
                     items={itemsWithPalette}
                     length={length}
                 />
-                <Legend items={itemsWithPalette} />
+                {showLegend && <Legend items={itemsWithPalette} />}
             </div>
         </div>
     );
